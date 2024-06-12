@@ -9,10 +9,10 @@
 
 ## Listen Port確認
 * sudo lsof -i -P | grep "LISTEN"
-> name1   633      ~~~~~~   10u  IPv4 0xc46fc72c3028ba51      0t0  TCP localhost:49362 (LISTEN)
-> name2   634      ~~~~~~   53u  IPv6 0xc46fc72c50688ca1      0t0  TCP *:3000 (LISTEN)
-> name3   96145    ~~~~~~   54u  IPv6 0xc46fc72c506892c1      0t0  TCP *:3306 (LISTEN)
-> name4   72412    ~~~~~~   82u  IPv4 0xc46fc72c4cf4e591      0t0  TCP localhost:62741 (LISTEN)
+> * name1   633      ~~~~~~   10u  IPv4 0xc46fc72c3028ba51      0t0  TCP localhost:49362 (LISTEN)
+> * name2   634      ~~~~~~   53u  IPv6 0xc46fc72c50688ca1      0t0  TCP *:3000 (LISTEN)
+> * name3   96145    ~~~~~~   54u  IPv6 0xc46fc72c506892c1      0t0  TCP *:3306 (LISTEN)
+> * name4   72412    ~~~~~~   82u  IPv4 0xc46fc72c4cf4e591      0t0  TCP localhost:62741 (LISTEN)
 
 sudo kill -9 96145
 
