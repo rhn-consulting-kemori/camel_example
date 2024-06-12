@@ -1,0 +1,24 @@
+- route:
+    id: customer-change-event-route
+    from:
+      uri: kafka:mytopic
+      parameters:
+        topicIsPattern: true
+      steps:
+        - filter:
+            steps:
+              - log:
+                  message: "- Recieve mytopic message : ${body}"
+              - unmarshal:
+                  id: unmarshal-3250
+                  json:
+                    moduleClassNames: KijitsuNyukinRequestEntity
+              - marshal:
+                  id: marshal-4813
+                  json:
+                    moduleClassNames: KijitsuNyukinRequestEntity
+              - to:
+                  id: to-7897
+                  uri: kafka:myresult
+                  parameters: {}
+            simple: ${body} != null
