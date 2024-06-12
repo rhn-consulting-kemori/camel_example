@@ -14,9 +14,9 @@ mvn package
 podman build -t camel-example .
 
 # mvn option 
-mvn compile
-mvn test
-mvn package
-mvn install
-mvn deploy
-mvn clean
+* mvn compile
+* mvn test
+* mvn package
+* mvn install
+* mvn deploy
+* mvn clean
