@@ -9,7 +9,7 @@ sudo yum install java-17-openjdk
 * https://gitlab.consulting.redhat.com/tkamata/camel-yaml-dsl-example
 
 # Run
-* mvn clean spring-boot:run -f camel-example
+* mvn clean spring-boot:run -f camel_example
 
 # Build Image
 * mvn clean

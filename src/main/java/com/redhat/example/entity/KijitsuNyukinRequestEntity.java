@@ -1,42 +1,40 @@
 package com.redhat.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class KijitsuNyukinRequestEntity {
-  /** 
-   * 受付ID
-  */
-  private String id;
 
-  /** 
-   * カード番号
-  */
-  private String cardbng;
+    /** 入金要求番号 */
+    @JsonProperty(value = "REQUEST_ID")
+    private String request_id;
 
-  /** 
-   * 個人契約番号
-  */
-  private String kojinkyknmb;
+    /** カード番号 */
+    @JsonProperty(value = "CARD_NUMBER")
+    private String card_number;
 
-  /** 
-   * 顧客請求締年月日
-  */
-  private String seiyushimeymd;
+    /** 顧客契約番号 */
+    @JsonProperty(value = "CUSTOMER_CONTRACT_NUMBER")
+    private String customer_contract_number;
 
-  /**
-   * 入金年月日
-   */
-  private String nyukinday;
+    /** 顧客請求締年月日 */
+    @JsonProperty(value = "CUSTOMER_BILLING_DUE_DATE")
+    private String customer_billing_due_date;
 
-  /** 
-   * 入金額
-  */
-  private BigDecimal nyukingak;
+    /** 入金年月日 */
+    @JsonProperty(value = "DEPOSIT_DATE")
+    private String deposit_date;
 
-  /**
-   * 過剰金取り扱い区分
-   */
-  private String kajokintriatukaikbn;
+    /** 入金額 */
+    @JsonProperty(value = "DEPOSIT_AMOUNT")
+    private BigDecimal deposit_amount;
+
+    /** 過剰金取扱区分 */
+    @JsonProperty(value = "EXCESS_MONEY_HANDLING_CATEGORY")
+    private String excess_money_handling_category;
+
 }

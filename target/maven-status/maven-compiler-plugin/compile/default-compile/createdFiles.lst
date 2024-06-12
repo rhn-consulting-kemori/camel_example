@@ -1,0 +1,4 @@
+com/redhat/example/processor/NyukinRequestCheckProcessor.class
+com/redhat/example/entity/KijitsuNyukinRequestEntity.class
+com/redhat/example/CamelExampleApplication.class
+com/redhat/example/entity/KijitsuNyukinExchangeEntity.class
