@@ -8,8 +8,13 @@ sudo yum install java-17-openjdk
 # kamata-san sample
 * https://gitlab.consulting.redhat.com/tkamata/camel-yaml-dsl-example
 
+# REST sample
+https://github.com/monodot/camel-demos/blob/master/examples/spring-boot/call-rest-service/src/main/java/xyz/tomd/cameldemos/springboot/callrest/CamelCallRestRouteBuilder.java
+https://github.com/monodot/camel-demos/tree/master/examples/spring-boot/rest-service
+
 # Run
 * mvn clean spring-boot:run -f camel_example
+* mvn clean spring-boot:run
 
 # Build Image
 * mvn clean

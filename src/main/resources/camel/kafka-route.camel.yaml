@@ -15,7 +15,8 @@
                     unmarshalType: com.redhat.example.entity.KijitsuNyukinRequestEntity
               - process:
                   id: process-Deposit Check
-                  ref: com.redhat.example.processor.NyukinRequestCheckProcessor
+                  description: Deposit Parameter Check
+                  ref: "#class:com.redhat.example.processor.NyukinRequestCheckProcessor"
               - to:
                   id: to-7897
                   uri: kafka:myresult

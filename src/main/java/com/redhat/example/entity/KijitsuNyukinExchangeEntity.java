@@ -2,8 +2,10 @@ package com.redhat.example.entity;
 
 import lombok.Data;
 import java.math.BigDecimal;
+import org.springframework.stereotype.Component;
 
 @Data
+@Component
 public class KijitsuNyukinExchangeEntity {
 
     /** 期日入金要求 */
@@ -26,10 +28,5 @@ public class KijitsuNyukinExchangeEntity {
 
     /** JECCS預り金 */
     private BigDecimal jeccs_deposit;
-
-    /** Ccnstructor */
-    public KijitsuNyukinExchangeEntity(KijitsuNyukinRequestEntity deposit_request) {
-        this.deposit_request = deposit_request;
-    }
     
 }
