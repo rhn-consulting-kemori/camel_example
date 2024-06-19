@@ -14,7 +14,7 @@
 * 停止：CTRL+D 
 
 ## Consumer
-* bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mytopic --group gekal
+* bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic myresult --group gekal
 * bin/kafka-verifiable-consumer.sh --bootstrap-server localhost:9092 --topic mytopic --group-id gekal
 * 停止：CTRL+C
 

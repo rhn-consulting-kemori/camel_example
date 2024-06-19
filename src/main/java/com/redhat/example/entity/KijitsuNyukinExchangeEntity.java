@@ -4,6 +4,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 import org.springframework.stereotype.Component;
 
+import com.redhat.example.type.CardCheckResponseType;
+
 @Data
 @Component
 public class KijitsuNyukinExchangeEntity {
@@ -11,8 +13,8 @@ public class KijitsuNyukinExchangeEntity {
     /** 期日入金要求 */
     private KijitsuNyukinRequestEntity deposit_request;
 
-    /** 入金受付チェック結果 */
-    private String deposit_check_result;
+    /** カード番号チェック結果 */
+    private CardCheckResponseType card_check_result;
 
     /** 入金結果 */
     private String deposit_result;

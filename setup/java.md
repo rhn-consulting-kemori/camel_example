@@ -9,8 +9,11 @@ sudo yum install java-17-openjdk
 * https://gitlab.consulting.redhat.com/tkamata/camel-yaml-dsl-example
 
 # REST sample
-https://github.com/monodot/camel-demos/blob/master/examples/spring-boot/call-rest-service/src/main/java/xyz/tomd/cameldemos/springboot/callrest/CamelCallRestRouteBuilder.java
-https://github.com/monodot/camel-demos/tree/master/examples/spring-boot/rest-service
+* https://github.com/monodot/camel-demos/blob/master/examples/spring-boot/call-rest-service/src/main/java/xyz/tomd/cameldemos/springboot/callrest/CamelCallRestRouteBuilder.java
+* https://github.com/monodot/camel-demos/tree/master/examples/spring-boot/rest-service
+* https://b1san-blog.com/post/spring/spring-rest-template/
+* https://zenn.dev/sugaryo/books/spring-boot-run-up/viewer/api_call
+* https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html
 
 # Run
 * mvn clean spring-boot:run -f camel_example

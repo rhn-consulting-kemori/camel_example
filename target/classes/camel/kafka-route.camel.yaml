@@ -1,24 +1,24 @@
 - route:
     id: customer-change-event-route
     from:
-      uri: kafka:mytopic
+      uri: kafka:{{app.input-topic-name}}
       parameters:
         topicIsPattern: true
       steps:
         - filter:
             steps:
               - log:
-                  message: "- Recieve mytopic message : ${body}"
+                  message: "- Recieve Topic Message : ${body}"
               - unmarshal:
                   id: unmarshal-Json-to-Object
                   json:
                     unmarshalType: com.redhat.example.entity.KijitsuNyukinRequestEntity
               - process:
-                  id: process-Deposit Check
-                  description: Deposit Parameter Check
-                  ref: "#class:com.redhat.example.processor.NyukinRequestCheckProcessor"
+                  id: process-CardCheck
+                  description: Card Number Check
+                  ref: "#class:com.redhat.example.processor.CardCheckProcessor"
               - to:
-                  id: to-7897
-                  uri: kafka:myresult
+                  id: to-Kafka
+                  uri: kafka:{{app.output-topic-name}}
                   parameters: {}
             simple: ${body} != null

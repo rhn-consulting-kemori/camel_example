@@ -14,3 +14,8 @@ camel:
       retries: 2147483647
       auto-commit-enable: false
       allow-manual-commit: true
+
+app:
+  url-card-check-service: "http://localhost:8182/camel/mock/card-check/"
+  input-topic-name: "mytopic"
+  output-topic-name: "myresult"

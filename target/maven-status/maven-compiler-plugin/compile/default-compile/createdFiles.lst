@@ -1,4 +1,7 @@
-com/redhat/example/processor/NyukinRequestCheckProcessor.class
+META-INF/spring-configuration-metadata.json
+com/redhat/example/config/AppConfig.class
+com/redhat/example/processor/CardCheckProcessor.class
 com/redhat/example/entity/KijitsuNyukinRequestEntity.class
+com/redhat/example/type/CardCheckResponseType.class
 com/redhat/example/CamelExampleApplication.class
 com/redhat/example/entity/KijitsuNyukinExchangeEntity.class

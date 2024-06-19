@@ -1,0 +1,28 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "type": "com.redhat.example.config.AppConfig",
+      "sourceType": "com.redhat.example.config.AppConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.input-topic-name",
+      "type": "java.lang.String",
+      "sourceType": "com.redhat.example.config.AppConfig"
+    },
+    {
+      "name": "app.output-topic-name",
+      "type": "java.lang.String",
+      "sourceType": "com.redhat.example.config.AppConfig"
+    },
+    {
+      "name": "app.url-card-check-service",
+      "type": "java.lang.String",
+      "description": "Config Parameter",
+      "sourceType": "com.redhat.example.config.AppConfig"
+    }
+  ],
+  "hints": []
+}

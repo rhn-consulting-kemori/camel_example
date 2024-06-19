@@ -1,4 +1,6 @@
 /home/kemori/demo/camel_example/src/main/java/com/redhat/example/CamelExampleApplication.java
+/home/kemori/demo/camel_example/src/main/java/com/redhat/example/config/AppConfig.java
 /home/kemori/demo/camel_example/src/main/java/com/redhat/example/entity/KijitsuNyukinExchangeEntity.java
 /home/kemori/demo/camel_example/src/main/java/com/redhat/example/entity/KijitsuNyukinRequestEntity.java
-/home/kemori/demo/camel_example/src/main/java/com/redhat/example/processor/NyukinRequestCheckProcessor.java
+/home/kemori/demo/camel_example/src/main/java/com/redhat/example/processor/CardCheckProcessor.java
+/home/kemori/demo/camel_example/src/main/java/com/redhat/example/type/CardCheckResponseType.java
