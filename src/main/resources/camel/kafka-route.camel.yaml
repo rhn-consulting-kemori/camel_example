@@ -15,8 +15,17 @@
                     unmarshalType: com.redhat.example.entity.KijitsuNyukinRequestEntity
               - process:
                   id: process-CardCheck
-                  description: Card Number Check
+                  description: card number check
                   ref: "#class:com.redhat.example.processor.CardCheckProcessor"
+              - log:
+                  message: "- Exchange Message  : ${body}"
+              - process:
+                  id: process-Set-Deposit-Result-Message
+                  description: set deposit result message
+                  ref: "#class:com.redhat.example.processor.SetDepositResultMessageProcessor"
+              - marshal:
+                  description: marshal-Object-to-Json
+                  json: {}
               - to:
                   id: to-Kafka
                   uri: kafka:{{app.output-topic-name}}

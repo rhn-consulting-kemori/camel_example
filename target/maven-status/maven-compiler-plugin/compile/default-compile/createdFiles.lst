@@ -1,7 +1,10 @@
 META-INF/spring-configuration-metadata.json
-com/redhat/example/config/AppConfig.class
-com/redhat/example/processor/CardCheckProcessor.class
-com/redhat/example/entity/KijitsuNyukinRequestEntity.class
+com/redhat/example/entity/KijitsuNyukinResponseEntity.class
 com/redhat/example/type/CardCheckResponseType.class
 com/redhat/example/CamelExampleApplication.class
 com/redhat/example/entity/KijitsuNyukinExchangeEntity.class
+com/redhat/example/processor/SetDepositResultMessageProcessor.class
+com/redhat/example/rule/SetDepositResultMessageRule.class
+com/redhat/example/config/AppConfig.class
+com/redhat/example/processor/CardCheckProcessor.class
+com/redhat/example/entity/KijitsuNyukinRequestEntity.class

@@ -25,7 +25,7 @@ import com.redhat.example.type.CardCheckResponseType;
 public class CardCheckProcessor implements Processor {
 
     @Autowired
-    KijitsuNyukinExchangeEntity exchange_message;
+    private KijitsuNyukinExchangeEntity exchange_message;
 
     @Autowired
     private AppConfig appConfig;
