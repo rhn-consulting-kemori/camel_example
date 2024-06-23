@@ -17,5 +17,6 @@ camel:
 
 app:
   url-card-check-service: "http://localhost:8182/camel/mock/card-check/"
+  url-deposit-category-service: "http://localhost:8182/camel/mock/deposit-category/"
   input-topic-name: "mytopic"
   output-topic-name: "myresult"

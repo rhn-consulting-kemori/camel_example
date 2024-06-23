@@ -10,36 +10,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 // Business Object
 import com.redhat.example.entity.KijitsuNyukinExchangeEntity;
-import com.redhat.example.entity.KijitsuNyukinResponseEntity;
-
-// Business Rule
-import com.redhat.example.rule.SetDepositResultMessageRule;
 
 @Component
-public class SetDepositResultMessageProcessor implements Processor{
+public class DepositAllocationProcessor implements Processor {
 
     @Autowired
     private KijitsuNyukinExchangeEntity exchange_message;
 
-    @Autowired
-    private SetDepositResultMessageRule message_rule;
-
     @Override
     public void process(Exchange exchange) throws Exception {
+
         /**
          * Exchange IN
          */
         exchange_message = exchange.getMessage().getBody(KijitsuNyukinExchangeEntity.class);
 
-        /**
-         * Rule Call: SetDepositResultMessageRule
-         */
-        KijitsuNyukinResponseEntity result_message = message_rule.editResultMessage(exchange_message);
+        /** 
+         * External Domain Service Call
+         * 
+         */ 
 
+         
         /**
          * Exchange OUT
          */
-        exchange.getMessage().setBody(result_message);
+        exchange.getMessage().setBody(exchange_message);
 
     }
+
 }

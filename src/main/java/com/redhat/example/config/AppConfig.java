@@ -11,6 +11,7 @@ public class AppConfig {
     
     /** Config Parameter */
     private String urlCardCheckService;
+    private String urlDepositCategoryService;
     private String inputTopicName;
     private String outputTopicName;
     

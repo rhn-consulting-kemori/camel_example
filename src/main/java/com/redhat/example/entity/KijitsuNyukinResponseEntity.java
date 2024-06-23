@@ -14,6 +14,12 @@ public class KijitsuNyukinResponseEntity {
     /** 入金結果 */
     private String deposit_result;
 
+    /** エラーコード */
+    private String err_code;
+
+    /** エラー理由 */
+    private String err_context;
+
     /** 入金種類区分 */
     private String deposit_category_code;
 

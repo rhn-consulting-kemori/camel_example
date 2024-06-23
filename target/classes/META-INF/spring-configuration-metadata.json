@@ -22,6 +22,11 @@
       "type": "java.lang.String",
       "description": "Config Parameter",
       "sourceType": "com.redhat.example.config.AppConfig"
+    },
+    {
+      "name": "app.url-deposit-category-service",
+      "type": "java.lang.String",
+      "sourceType": "com.redhat.example.config.AppConfig"
     }
   ],
   "hints": []

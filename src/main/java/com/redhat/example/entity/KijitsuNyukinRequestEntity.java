@@ -25,6 +25,10 @@ public class KijitsuNyukinRequestEntity {
     @JsonProperty(value = "CUSTOMER_BILLING_DUE_DATE")
     private String customer_billing_due_date;
 
+    /** 約定決済年月日 */
+    @JsonProperty(value = "CONTRACT_SETTLEMENT_DATE")
+    private String contract_settlement_date;
+
     /** 入金年月日 */
     @JsonProperty(value = "DEPOSIT_DATE")
     private String deposit_date;
