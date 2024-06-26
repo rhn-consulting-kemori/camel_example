@@ -1,26 +1,43 @@
 @startuml
-class CardCheckProcessor {
+class KijitsuNyukinRequestEntity {
+    - String request_id
+    - String card_number
+    - String customer_contract_number
+    - String customer_billing_due_date
+    - String contract_settlement_date
+    - String deposit_date
+    - BigDecimal deposit_amount
+    - String excess_money_handling_category
+}
+KijitsuNyukinRequestEntity -> DepositEntryCheckProcessor : Exchange
+
+class DepositEntryCheckProcessor {
     - KijitsuNyukinExchangeEntity exchange_message
-    - CardCheckService service
+    - DepositEntryCheckService service
     + void process()
 }
-class CardCheckService {
+class DepositEntryCheckService {
     - AppConfig appConfig
-    - CardCheckResponseType response_body
-    + CardCheckResponseType serviceRequest()
+    - DepositEntryCheckResponseType response_body
+    + DepositEntryCheckResponseType serviceRequest()
 }
-CardCheckProcessor --> CardCheckService : CALL
-
-class CardCheckRequestType {
-    - String cardnumber
-    + CardCheckRequestType()
+DepositEntryCheckProcessor --> DepositEntryCheckService : CALL
+class DepositEntryCheckRequestType {
+    - String card_number
+    - String customer_contract_number
+    - String customer_billing_due_date
+    - String contract_settlement_date
+    - String deposit_date
+    - BigDecimal deposit_amount
+    - String excess_money_handling_category
+    + DepositEntryCheckRequestType()
 }
 class ServiceRequestType {
     - String request_id
 }
-CardCheckRequestType ---|> ServiceRequestType
+DepositEntryCheckRequestType ---|> ServiceRequestType
 
-class CardCheckResponseType {
+class DepositEntryCheckResponseType {
 }
 class ServiceResponseType {
     - ServiceRequestType service_request
@@ -29,9 +46,10 @@ class ServiceResponseType {
     - String err_context
     + void setResult()
 }
-CardCheckResponseType ---|> ServiceResponseType
-CardCheckService <.. CardCheckRequestType: REQUEST
-CardCheckService ..> CardCheckResponseType : RESPONSE
+DepositEntryCheckResponseType ---|> ServiceResponseType
+DepositEntryCheckService <.. DepositEntryCheckRequestType: REQUEST
+DepositEntryCheckService ..> DepositEntryCheckResponseType : RESPONSE
+DepositEntryCheckProcessor -> DepositCategoryProcessor : Exchange: KijitsuNyukinExchangeEntity
 
 class DepositCategoryProcessor {
     - KijitsuNyukinExchangeEntity exchange_message
@@ -44,7 +62,6 @@ class DepositCategoryService {
     + DepositCategoryRequestType serviceRequest()
 }
 DepositCategoryProcessor --> DepositCategoryService : CALL
-
 class DepositCategoryRequestType {
     - String customer_contract_number
     - String customer_billing_due_date
@@ -52,14 +69,42 @@ class DepositCategoryRequestType {
     - String deposit_date
     + DepositCategoryRequestType()
 }
-DepositCategoryRequestType ---|> ServiceRequestType
-
+note bottom: Extends ServiceRequestType
 class DepositCategoryResponseType {
     - String deposit_category_code
 }
-DepositCategoryResponseType ---|> ServiceResponseType
+note bottom: Extends ServiceResponseType
 DepositCategoryService <.. DepositCategoryRequestType: REQUEST
 DepositCategoryService ..> DepositCategoryResponseType : RESPONSE
+DepositCategoryProcessor -> CheckAvailableDepositAmountProcessor : Exchange: KijitsuNyukinExchangeEntity
+
+class CheckAvailableDepositAmountProcessor {
+    - KijitsuNyukinExchangeEntity exchange_message
+    - CheckAvailableDepositAmountService service
+    + void process()
+}
+class CheckAvailableDepositAmountService {
+    - AppConfig appConfig
+    - CheckAvailableDepositAmountResponseType response_body
+    + CheckAvailableDepositAmountResponseType serviceRequest()
+}
+CheckAvailableDepositAmountProcessor --> CheckAvailableDepositAmountService : CALL
+class CheckAvailableDepositAmountRequestType {
+    - String customer_contract_number
+    - String deposit_date
+    - String customer_billing_due_date
+    - String contract_settlement_date
+    - String deposit_category_code
+    + CheckAvailableDepositAmountRequestType()
+}
+note bottom: Extends ServiceRequestType
+class CheckAvailableDepositAmountResponseType {
+    - AvailableDepositAmountDataEntity deposit_available_amount_data
+}
+note bottom: Extends ServiceResponseType
+CheckAvailableDepositAmountService <.. CheckAvailableDepositAmountRequestType: REQUEST
+CheckAvailableDepositAmountService ..> CheckAvailableDepositAmountResponseType : RESPONSE
+CheckAvailableDepositAmountProcessor -> DepositAllocationProcessor : Exchange: KijitsuNyukinExchangeEntity
 
 class DepositAllocationProcessor {
     - KijitsuNyukinExchangeEntity exchange_message
@@ -72,25 +117,56 @@ class DepositAllocationService {
     + DepositAllocationResponseType serviceRequest()
 }
 DepositAllocationProcessor --> DepositAllocationService : CALL
-
 class DepositAllocationRequestType {
-    - String request_id
     - String customer_contract_number
     - String deposit_date
     - String customer_billing_due_date
     - String contract_settlement_date
     - String deposit_category_code
+    - BigDecimal deposit_amount
+    - String excess_money_handling_category
+    - AvailableDepositAmountDataEntity deposit_available_amount_data
     + DepositAllocationRequestType()
 }
+note bottom: Extends ServiceRequestType
 class DepositAllocationResponseType {
-    - DepositAllocationRequestType deposit_allocation_request
     - DepositAllocationDataEntity deposit_allocation_data
-    - String response_result
-    - String err_code
-    - String err_context
 }
+note bottom: Extends ServiceResponseType
 DepositAllocationService <.. DepositAllocationRequestType: REQUEST
 DepositAllocationService ..> DepositAllocationResponseType : RESPONSE
+DepositAllocationProcessor -> DepositProcessor : Exchange: KijitsuNyukinExchangeEntity
+
+class DepositProcessor {
+    - KijitsuNyukinExchangeEntity exchange_message
+    - DepositService service
+    + void process()
+}
+class DepositService {
+    - AppConfig appConfig
+    - DepositResponseType response_body
+    + DepositResponseType serviceRequest()
+}
+DepositProcessor --> DepositService : CALL
+class DepositRequestType {
+    - String customer_contract_number
+    - String deposit_date
+    - String customer_billing_due_date
+    - String contract_settlement_date
+    - String deposit_category_code
+    - BigDecimal deposit_amount
+    - String excess_money_handling_category
+    - DepositAllocationDataEntity deposit_allocation_data
+    + DepositRequestType()
+}
+note bottom: Extends ServiceRequestType
+class DepositResponseType {
+    - DepositDataEntity deposit_data
+}
+note bottom: Extends ServiceResponseType
+DepositService <.. DepositRequestType: REQUEST
+DepositService ..> DepositResponseType : RESPONSE
+DepositProcessor -> SetDepositResultMessageProcessor : Exchange: KijitsuNyukinExchangeEntity
 
 class SetDepositResultMessageProcessor {
     - KijitsuNyukinExchangeEntity exchange_message
@@ -114,6 +190,7 @@ class KijitsuNyukinExchangeEntity {
     + KijitsuNyukinExchangeEntity()
     + void setErrorInf()
 }
+
 class KijitsuNyukinResponseEntity {
     - KijitsuNyukinRequestEntity deposit_request
     - String deposit_result
@@ -126,5 +203,5 @@ class KijitsuNyukinResponseEntity {
 }
 SetDepositResultMessageRule <.. KijitsuNyukinExchangeEntity: INPUT
 SetDepositResultMessageRule ..> KijitsuNyukinResponseEntity : OUTPUT
-
+SetDepositResultMessageProcessor --> KijitsuNyukinResponseEntity : Exchange
 @enduml
