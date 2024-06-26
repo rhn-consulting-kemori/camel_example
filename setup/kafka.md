@@ -24,3 +24,8 @@
 * bin/kafka-consumer-groups.sh --delete --bootstrap-server localhost:9092 --group gekal
 * bin/kafka-consumer-groups.sh --reset-offsets --bootstrap-server localhost:9092 --topic mytopic --group gekal --to-earliest
 * bin/kafka-consumer-groups.sh --delete-offsets --bootstrap-server localhost:9092 --topic mytopic --group gekal
+
+# Kafka VS Code Extentions
+Tools for Kafka Extensions
+Producer .kafka
+Comsumer .kafka
