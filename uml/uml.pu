@@ -204,4 +204,43 @@ class KijitsuNyukinResponseEntity {
 SetDepositResultMessageRule <.. KijitsuNyukinExchangeEntity: INPUT
 SetDepositResultMessageRule ..> KijitsuNyukinResponseEntity : OUTPUT
 SetDepositResultMessageProcessor --> KijitsuNyukinResponseEntity : Exchange
+
+class AvailableDepositAmountDataEntity {
+    - SeikyuCompositeUnitEntity estimated_billing_amount
+    - SaikenCompositeUnitEntity deposit_available_amount
+}
+AvailableDepositAmountDataEntity -- SeikyuCompositeUnitEntity: include
+AvailableDepositAmountDataEntity -- SaikenCompositeUnitEntity: include
+
+class SaikenCompositeUnitEntity {
+    - SaikenSimpleUnitEntity total_amout
+    - Map products_amount_map
+}
+class SaikenSimpleUnitEntity {
+    - BigDecimal principal_amount
+    - BigDecimal interest_amount
+}
+SaikenCompositeUnitEntity -- SaikenSimpleUnitEntity: include
+class SeikyuCompositeUnitEntity {
+    - SeikyuSimpleUnitEntity total_billing
+    - Map products_billing_map
+}
+class SeikyuSimpleUnitEntity {
+    - BigDecimal billing_principal_amount
+    - BigDecimal billing_interest_amount
+    - BigDecimal deposit_principal_amount
+    - BigDecimal deposit_interest_amount
+}
+SeikyuCompositeUnitEntity -- SeikyuSimpleUnitEntity: include
+
+class DepositAllocationDataEntity {
+    - SaikenCompositeUnitEntity deposit_allocation_amount
+    - SeikyuCompositeUnitEntity estimated_billing_amount
+}
+class DepositDataEntity {
+    - SaikenCompositeUnitEntity deposit_allocation_amount
+    - SeikyuCompositeUnitEntity estimated_billing_amount
+    - SaikenCompositeUnitEntity balance_amount
+}
+
 @enduml
