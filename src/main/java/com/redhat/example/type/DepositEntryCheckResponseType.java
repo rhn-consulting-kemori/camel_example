@@ -3,5 +3,5 @@ package com.redhat.example.type;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CardCheckResponseType extends ServiceResponseType {
+public class DepositEntryCheckResponseType extends ServiceResponseType {
 }

@@ -10,9 +10,13 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
     
     /** Config Parameter */
-    private String urlCardCheckService;
-    private String urlDepositCategoryService;
     private String inputTopicName;
     private String outputTopicName;
     
+    // URL
+    private String urlDepositEntryCheck;
+    private String urlDepositCategory;
+    private String urlCheckAvailableDepositAmount;
+    private String urlDepositAllocation;
+    private String urlDeposit;
 }

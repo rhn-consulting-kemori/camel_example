@@ -10,6 +10,7 @@
     {
       "name": "app.input-topic-name",
       "type": "java.lang.String",
+      "description": "Config Parameter",
       "sourceType": "com.redhat.example.config.AppConfig"
     },
     {
@@ -18,13 +19,27 @@
       "sourceType": "com.redhat.example.config.AppConfig"
     },
     {
-      "name": "app.url-card-check-service",
+      "name": "app.url-check-available-deposit-amount",
       "type": "java.lang.String",
-      "description": "Config Parameter",
       "sourceType": "com.redhat.example.config.AppConfig"
     },
     {
-      "name": "app.url-deposit-category-service",
+      "name": "app.url-deposit",
+      "type": "java.lang.String",
+      "sourceType": "com.redhat.example.config.AppConfig"
+    },
+    {
+      "name": "app.url-deposit-allocation",
+      "type": "java.lang.String",
+      "sourceType": "com.redhat.example.config.AppConfig"
+    },
+    {
+      "name": "app.url-deposit-category",
+      "type": "java.lang.String",
+      "sourceType": "com.redhat.example.config.AppConfig"
+    },
+    {
+      "name": "app.url-deposit-entry-check",
       "type": "java.lang.String",
       "sourceType": "com.redhat.example.config.AppConfig"
     }

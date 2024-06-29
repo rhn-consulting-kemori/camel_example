@@ -14,9 +14,21 @@
                   json:
                     unmarshalType: com.redhat.example.entity.KijitsuNyukinRequestEntity
               - process:
-                  id: process-CardCheck
-                  description: card number check
-                  ref: "#class:com.redhat.example.processor.CardCheckProcessor"
+                  id: process-DepositEntryCheck
+                  description: 入金受付チェック
+                  ref: "#class:com.redhat.example.processor.DepositEntryCheckProcessor"
+              - process:
+                  id: process-DepositCategory
+                  description: 入金種類区分取得
+                  ref: "#class:com.redhat.example.processor.DepositCategoryProcessor"
+              - process:
+                  id: process-CheckAvailableDepositAmount
+                  description: 入金可能額照会
+                  ref: "#class:com.redhat.example.processor.CheckAvailableDepositAmountProcessor"
+              - process:
+                  id: process-DepositAllocation
+                  description: 入金充当額試算
+                  ref: "#class:com.redhat.example.processor.DepositAllocationProcessor"
               - log:
                   message: "- Exchange Message  : ${body}"
               - process:

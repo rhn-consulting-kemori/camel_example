@@ -34,7 +34,7 @@ public class DepositCategoryService {
         RestTemplate restTemplate = new RestTemplate();
 
         /** URL */
-        String url = appConfig.getUrlDepositCategoryService();
+        String url = appConfig.getUrlDepositCategory();
 
         /** Header */
         HttpHeaders headers = new HttpHeaders();

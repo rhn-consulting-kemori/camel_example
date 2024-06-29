@@ -25,8 +25,14 @@ public class KijitsuNyukinExchangeEntity {
     /** 入金種類区分 */
     private String deposit_category_code;
 
+    /** 入金可能額照会 */
+    private AvailableDepositAmountDataEntity deposit_available_amount_data;
+    
+    /** 入金充当試算 */
+    private DepositAllocationDataEntity deposit_allocation_data;
+
     // ----------------------------------------------------- 
-     /** 入金充当額 */
+    /** 入金充当額 */
     private BigDecimal deposit_allocation_amount;
 
     /** 過剰金 */
