@@ -36,7 +36,7 @@ public class CheckAvailableDepositAmountProcessor implements Processor {
 
         /** 
          * External Domain Service Call
-         * Deposit Category Service
+         * 入金可能額照会業務
          */
         if(exchange_message.getDeposit_result().equals("0")){ 
             CheckAvailableDepositAmountResponseType response_body = service.serviceRequest(

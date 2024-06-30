@@ -166,17 +166,17 @@ class DepositResponseType {
 note bottom: Extends ServiceResponseType
 DepositService <.. DepositRequestType: REQUEST
 DepositService ..> DepositResponseType : RESPONSE
-DepositProcessor -> SetDepositResultMessageProcessor : Exchange: KijitsuNyukinExchangeEntity
+DepositProcessor -> DepositResultMessageProcessor : Exchange: KijitsuNyukinExchangeEntity
 
-class SetDepositResultMessageProcessor {
+class DepositResultMessageProcessor {
     - KijitsuNyukinExchangeEntity exchange_message
-    - SetDepositResultMessageRule message_rule
+    - DepositResultMessageRule rule
     + void process()
 }
-class SetDepositResultMessageRule {
-    + KijitsuNyukinResponseEntity editResultMessage()
+class DepositResultMessageRule {
+    + KijitsuNyukinResponseEntity executeRule()
 }
-SetDepositResultMessageProcessor --> SetDepositResultMessageRule : CALL
+DepositResultMessageProcessor --> DepositResultMessageRule : CALL
 
 class KijitsuNyukinExchangeEntity {
     - KijitsuNyukinRequestEntity deposit_request
@@ -184,9 +184,9 @@ class KijitsuNyukinExchangeEntity {
     - String err_code
     - String err_context
     - String deposit_category_code
-    - BigDecimal deposit_allocation_amount
-    - BigDecimal excess_money
-    - BigDecimal jeccs_deposit
+    - AvailableDepositAmountDataEntity deposit_available_amount_data
+    - DepositAllocationDataEntity deposit_allocation_data
+    - DepositDataEntity deposit_data
     + KijitsuNyukinExchangeEntity()
     + void setErrorInf()
 }
@@ -197,13 +197,15 @@ class KijitsuNyukinResponseEntity {
     - String err_code
     - String err_context
     - String deposit_category_code
-    - BigDecimal deposit_allocation_amount
+    - SaikenCompositeUnitEntity deposit_allocation_amount
     - BigDecimal excess_money
     - BigDecimal jeccs_deposit
+    - SeikyuCompositeUnitEntity estimated_billing_amount
+    - SaikenCompositeUnitEntity balance_amount
 }
-SetDepositResultMessageRule <.. KijitsuNyukinExchangeEntity: INPUT
-SetDepositResultMessageRule ..> KijitsuNyukinResponseEntity : OUTPUT
-SetDepositResultMessageProcessor --> KijitsuNyukinResponseEntity : Exchange
+DepositResultMessageRule <.. KijitsuNyukinExchangeEntity: INPUT
+DepositResultMessageRule ..> KijitsuNyukinResponseEntity : OUTPUT
+DepositResultMessageProcessor --> KijitsuNyukinResponseEntity : Exchange
 
 class AvailableDepositAmountDataEntity {
     - SeikyuCompositeUnitEntity estimated_billing_amount
@@ -236,9 +238,11 @@ SeikyuCompositeUnitEntity -- SeikyuSimpleUnitEntity: include
 class DepositAllocationDataEntity {
     - SaikenCompositeUnitEntity deposit_allocation_amount
     - SeikyuCompositeUnitEntity estimated_billing_amount
+    - BigDecimal excess_money
 }
 class DepositDataEntity {
     - SaikenCompositeUnitEntity deposit_allocation_amount
+    - BigDecimal excess_money
     - SeikyuCompositeUnitEntity estimated_billing_amount
     - SaikenCompositeUnitEntity balance_amount
 }

@@ -35,7 +35,7 @@ public class DepositCategoryProcessor implements Processor {
 
         /** 
          * External Domain Service Call
-         * Deposit Category Service
+         * 入金種類区分判定の業務
          */
         if(exchange_message.getDeposit_result().equals("0")){ 
             DepositCategoryResponseType response_body = service.serviceRequest(

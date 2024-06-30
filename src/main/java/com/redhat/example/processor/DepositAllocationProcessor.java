@@ -36,7 +36,7 @@ public class DepositAllocationProcessor implements Processor {
 
         /** 
          * External Domain Service Call
-         * Deposit Category Service
+         * 入金充当額試算業務
          */
         if(exchange_message.getDeposit_result().equals("0")){ 
             DepositAllocationResponseType response_body = service.serviceRequest(

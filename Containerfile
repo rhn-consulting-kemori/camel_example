@@ -1,11 +1,12 @@
 # Use OpenJDK 17 as the base image
-FROM eclipse-temurin:17.0.3_7-jdk-jammy
+FROM registry.access.redhat.com/ubi9/openjdk-17
 
-# Metadata as a label
-LABEL maintainer="kemori@redhat.com" version="1.0" description="Camel Example"
+# Set working dir
+WORKDIR /app
+COPY target/camel-example-yaml-dsl-1.0-SNAPSHOT.jar app.jar
 
-# Copy the application JAR into the container
-COPY target/camel-example-yaml-dsl-1.0-SNAPSHOT.jar /app/camel-example-service.jar
+# Expose the port that your Spring Boot application listens on
+EXPOSE 8180
 
 # Command to run the application
-CMD ["java", "-jar", "/app/camel-example-service.jar"]
+CMD ["java", "-jar", "app.jar"]

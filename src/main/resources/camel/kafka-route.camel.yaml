@@ -7,39 +7,48 @@
       steps:
         - filter:
             steps:
-              - log:
-                  message: "- Recieve Topic Message : ${body}"
               - unmarshal:
                   id: unmarshal-Json-to-Object
+                  description: JSON→Class変換
                   json:
                     unmarshalType: com.redhat.example.entity.KijitsuNyukinRequestEntity
+              - log:
+                  id: log-Recieve
+                  description: 受信ログ
+                  message: "- Recieve Message - [${body.request_id}] : ${body}"
               - process:
                   id: process-DepositEntryCheck
-                  description: 入金受付チェック
+                  description: 入金受付チェック業務
                   ref: "#class:com.redhat.example.processor.DepositEntryCheckProcessor"
               - process:
                   id: process-DepositCategory
-                  description: 入金種類区分取得
+                  description: 入金種類区分判定業務
                   ref: "#class:com.redhat.example.processor.DepositCategoryProcessor"
               - process:
                   id: process-CheckAvailableDepositAmount
-                  description: 入金可能額照会
+                  description: 入金可能額照会業務
                   ref: "#class:com.redhat.example.processor.CheckAvailableDepositAmountProcessor"
               - process:
                   id: process-DepositAllocation
-                  description: 入金充当額試算
+                  description: 入金充当額試算業務
                   ref: "#class:com.redhat.example.processor.DepositAllocationProcessor"
-              - log:
-                  message: "- Exchange Message  : ${body}"
               - process:
-                  id: process-Set-Deposit-Result-Message
-                  description: set deposit result message
-                  ref: "#class:com.redhat.example.processor.SetDepositResultMessageProcessor"
+                  id: process-Deposit
+                  description: 入金業務
+                  ref: "#class:com.redhat.example.processor.DepositProcessor"
+              - process:
+                  id: process-DepositResultMessage
+                  description: 入金結果報告業務
+                  ref: "#class:com.redhat.example.processor.DepositResultMessageProcessor"
               - marshal:
-                  description: marshal-Object-to-Json
+                  description: Class→JSON変換
                   json: {}
               - to:
                   id: to-Kafka
                   uri: kafka:{{app.output-topic-name}}
                   parameters: {}
+              - log:
+                  id: log-Compete
+                  description: 完了ログ
+                  message: "- Complete - ${body}"
             simple: ${body} != null

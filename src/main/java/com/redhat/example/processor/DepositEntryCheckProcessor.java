@@ -37,7 +37,7 @@ public class DepositEntryCheckProcessor implements Processor {
 
         /** 
          * External Domain Service Call
-         * Deposit Category Service
+         * 入金受付チェック業務
          */ 
         DepositEntryCheckResponseType response_body = service.serviceRequest(
             new DepositEntryCheckRequestType(
@@ -62,5 +62,6 @@ public class DepositEntryCheckProcessor implements Processor {
          * Exchange OUT
          */
         exchange.getMessage().setBody(exchange_message);
+
     }
 }

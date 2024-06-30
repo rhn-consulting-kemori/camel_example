@@ -31,15 +31,8 @@ public class KijitsuNyukinExchangeEntity {
     /** 入金充当試算 */
     private DepositAllocationDataEntity deposit_allocation_data;
 
-    // ----------------------------------------------------- 
-    /** 入金充当額 */
-    private BigDecimal deposit_allocation_amount;
-
-    /** 過剰金 */
-    private BigDecimal excess_money;
-
-    /** JECCS預り金 */
-    private BigDecimal jeccs_deposit;
+    /** 入金結果 */
+    private DepositDataEntity deposit_data;
 
     /**
      * コンストラクタ

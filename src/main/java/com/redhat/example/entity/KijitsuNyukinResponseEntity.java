@@ -2,8 +2,11 @@ package com.redhat.example.entity;
 
 import lombok.Data;
 import java.math.BigDecimal;
+
 import org.springframework.stereotype.Component;
 
+import com.redhat.example.entity.SaikenCompositeUnitEntity;
+import com.redhat.example.entity.SeikyuCompositeUnitEntity;
 @Data
 @Component
 public class KijitsuNyukinResponseEntity {
@@ -24,12 +27,18 @@ public class KijitsuNyukinResponseEntity {
     private String deposit_category_code;
 
     /** 入金充当額 */
-    private BigDecimal deposit_allocation_amount;
+    private SaikenCompositeUnitEntity deposit_allocation_amount;
 
     /** 過剰金 */
     private BigDecimal excess_money;
 
     /** JECCS預り金 */
     private BigDecimal jeccs_deposit;
+    
+    /** 残請求予定額 */
+    private SeikyuCompositeUnitEntity estimated_billing_amount;
+    
+    /** 残高 */
+    private SaikenCompositeUnitEntity balance_amount;
 
 }

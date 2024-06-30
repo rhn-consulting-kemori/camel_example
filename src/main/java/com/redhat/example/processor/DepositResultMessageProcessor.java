@@ -13,16 +13,16 @@ import com.redhat.example.entity.KijitsuNyukinExchangeEntity;
 import com.redhat.example.entity.KijitsuNyukinResponseEntity;
 
 // Business Rule
-import com.redhat.example.rule.SetDepositResultMessageRule;
+import com.redhat.example.rule.DepositResultMessageRule;
 
 @Component
-public class SetDepositResultMessageProcessor implements Processor{
+public class DepositResultMessageProcessor implements Processor{
 
     @Autowired
     private KijitsuNyukinExchangeEntity exchange_message;
 
     @Autowired
-    private SetDepositResultMessageRule message_rule;
+    private DepositResultMessageRule rule;
 
     @Override
     public void process(Exchange exchange) throws Exception {
@@ -32,9 +32,10 @@ public class SetDepositResultMessageProcessor implements Processor{
         exchange_message = exchange.getMessage().getBody(KijitsuNyukinExchangeEntity.class);
 
         /**
-         * Rule Call: SetDepositResultMessageRule
+         * Rule Call
+         * 入金結果報告ルール
          */
-        KijitsuNyukinResponseEntity result_message = message_rule.editResultMessage(exchange_message);
+        KijitsuNyukinResponseEntity result_message = rule.executeRule(exchange_message);
 
         /**
          * Exchange OUT
