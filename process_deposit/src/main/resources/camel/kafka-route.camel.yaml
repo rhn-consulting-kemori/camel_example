@@ -18,27 +18,27 @@
                   message: "- Recieve Message - [${body.request_id}] : ${body}"
               - process:
                   id: process-DepositEntryCheck
-                  description: 入金受付チェック業務
+                  description: 入金受付チェック
                   ref: "#class:com.redhat.example.processor.DepositEntryCheckProcessor"
               - process:
                   id: process-DepositCategory
-                  description: 入金種類区分判定業務
+                  description: 入金種類判定
                   ref: "#class:com.redhat.example.processor.DepositCategoryProcessor"
               - process:
                   id: process-CheckAvailableDepositAmount
-                  description: 入金可能額照会業務
+                  description: 入金可能額試算
                   ref: "#class:com.redhat.example.processor.CheckAvailableDepositAmountProcessor"
               - process:
                   id: process-DepositAllocation
-                  description: 入金充当額試算業務
+                  description: 充当額割当
                   ref: "#class:com.redhat.example.processor.DepositAllocationProcessor"
               - process:
                   id: process-Deposit
-                  description: 入金業務
+                  description: 入金
                   ref: "#class:com.redhat.example.processor.DepositProcessor"
               - process:
                   id: process-DepositResultMessage
-                  description: 入金結果報告業務
+                  description: 入金結果連携
                   ref: "#class:com.redhat.example.processor.DepositResultMessageProcessor"
               - marshal:
                   description: Class→JSON変換

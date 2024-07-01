@@ -1,0 +1,25 @@
+server:
+  port: 8180
+
+camel:
+  component:
+    kafka:
+      group-id: ${CONSUMER_GROUP:customer-exporter}
+      brokers: ${AMQS_BOOTSTRAP_SERVER:kafka-pod:9092}
+      auto-offset-reset: earliest
+      break-on-first-error: true
+      request-required-acks: -1
+      max-in-flight-request: 5
+      enable-idempotence: true
+      retries: 2147483647
+      auto-commit-enable: false
+      allow-manual-commit: true
+
+app:
+  url-deposit-entry-check: "http://demo_camel_api:8183/camel/demo/deposit-entry-check"
+  url-deposit-category: "http://demo_camel_api:8183/camel/demo/deposit-category"
+  url-check-available-deposit-amount: "http://demo_camel_api:8183/camel/demo/check-available-deposit-amount"
+  url-deposit-allocation: "http://demo_camel_api:8183/camel/demo/deposit-allocation"
+  url-deposit: "http://demo_camel_api:8183/camel/demo/deposit"
+  input-topic-name: "mytopic"
+  output-topic-name: "myresult"

@@ -1,7 +1,15 @@
 # Pod
-* podman pod create --name kafka-pod -p 2181:2181/tcp,9092:9092/tcp
+* podman network create pod-net
+* podman pod create --net pod-net --name kafka-pod -p 2181:2181/tcp,9092:9092/tcp
 * podman run -d --pod=kafka-pod -e ZOOKEEPER_CLIENT_PORT="2181" -e KAFKA_OPTS="-Dlog4j.configuration=file:/etc/kafka/log4j.properties" --name=zookeeper docker.io/confluentinc/cp-zookeeper:7.4.3
 * podman run -d --pod kafka-pod -e KAFKA_ZOOKEEPER_CONNECT="localhost:2181" -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP="PLAINTEXT:PLAINTEXT" -e KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://localhost:9092" -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR="1" -e KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR="1" -e KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR="1" -e KAFKA_TRANSACTION_STATE_LOG_MIN_ISR="1" -e KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR="1" -e CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS="1" -e KAFKA_OPTS="-Dlog4j.configuration=file:/etc/kafka/log4j.properties" --name kafka-broker docker.io/confluentinc/cp-kafka:7.4.3
+
+* podman pod create --net pod-net --name api-pod -p 8183:8183/tcp
+* podman run -d --pod api-pod --name demo_camel_api demo_camel_api
+
+* podman build -t demo_deposit_camel .
+* podman pod create --net pod-net --name camel-pod -p 8180:8180/tcp
+* podman run -d --pod camel-pod --name demo_deposit_camel demo_deposit_camel
 
 # Network Check
 * https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/9/html/building_running_and_managing_containers/proc_communicating-between-a-container-and-an-application_assembly_communicating-among-containers

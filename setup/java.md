@@ -7,6 +7,7 @@ sudo yum install java-17-openjdk
 
 # kamata-san sample
 * https://gitlab.consulting.redhat.com/tkamata/camel-yaml-dsl-example
+* https://gitlab.consulting.redhat.com/docomo-mobills/poc-apps
 
 # REST sample
 * https://github.com/monodot/camel-demos/blob/master/examples/spring-boot/call-rest-service/src/main/java/xyz/tomd/cameldemos/springboot/callrest/CamelCallRestRouteBuilder.java
