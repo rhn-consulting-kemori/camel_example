@@ -1,35 +1,42 @@
 package com.redhat.example.type;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
+
 import org.springframework.stereotype.Component;
+
+import com.redhat.example.entity.DepositAllocationDataEntity;
 
 @Data
 @Component
-public class DepositEntryCheckRequestType {
+public class DepositRequestType {
 
     /** REQUEST ID */
     private String request_id;
 
-    /** カード番号 */
-    private String card_number;
-
-    /** 顧客契約番号 */
+    /** 個人契約番号 */
     private String customer_contract_number;
+
+    /** 入金日 */
+    private String deposit_date;
 
     /** 顧客請求締年月日 */
     private String customer_billing_due_date;
 
-    /** 約定決済年月日 */
+    /** 決済日 */
     private String contract_settlement_date;
 
-    /** 入金年月日 */
-    private String deposit_date;
+    /** 入金種類区分 */
+    private String deposit_category_code;
 
     /** 入金額 */
     private BigDecimal deposit_amount;
 
-    /** 過剰金取扱区分 */
+    /** 過剰金調整区分 */
     private String excess_money_handling_category;
+
+    /** 入金充当情報 */
+    private DepositAllocationDataEntity deposit_allocation_data;
 
 }
