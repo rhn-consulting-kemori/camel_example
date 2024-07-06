@@ -1,0 +1,27 @@
+@startuml Deposit
+|START|
+start
+#Yellow :調査部期日入金依頼;
+|フォーマットチェック|
+#Orange :期日入金入力チェックルール;
+|入金受付チェック|
+#Yellow :入金受付チェック依頼;
+#Aqua :入金受付チェック;
+|入金種類判定|
+#Yellow :入金種類判定依頼;
+#Aqua :入金種類判定;
+|入金可能額試算|
+#Lightblue :入金可能額試算依頼;
+#Aqua :入金可能額試算;
+|入金充当額試算|
+#Yellow :入金充当額算出依頼;
+#Aqua :充当額算出;
+|入金|
+#Yellow :入金依頼;
+#Aqua :入金;
+|入金結果連携|
+#Orange :入金イベント設定ルール;
+|END|
+#Yellow :入金イベント;
+stop
+@enduml
