@@ -1,0 +1,7 @@
+request_id,card_number,customer_contract_number,customer_billing_due_date,contract_settlement_date,deposit_date,deposit_amount,excess_money_handling_category,response_result,err_code, err_context,case_message
+A-001,3540000100010001,0000000001,20240515,20240610,20240611,10000,9,0,"","",A-001: OK-NORMAL DATA
+"",3540000100010002,0000000002,20240515,20240610,20240611,10000,9,1,E01,request_id: null error,A-002: NG-request_id is Null
+A-003,35400001000100039,0000000003,20240515,20240610,20240611,10000,9,1,E01,card_number: length error,A-003: NG-card_number Length error
+A-004,35400001000100X4,0000000004,20240515,20240610,20240611,10000,9,1,E02,card_number: numeric error,A-004: NG-card_number Numeric error
+A-005,3540000100010005,00000000050,20240515,20240610,20240611,10000,9,1,E01,customer_contract_number: length error,A-005: NG-customer_contract_number Length error
+A-006,3540000100010006,00000000X6,20240515,20240610,20240611,10000,9,1,E02,customer_contract_number: numeric error,A-006: NG-customer_contract_number Numeric error
