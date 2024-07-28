@@ -707,6 +707,12 @@
             description: 入金結果連携ルール
             method: executeRule
             ref: depositResultMessageRule
+        - setProperty:
+            id: setProperty-2303
+            expression:
+              simple:
+                expression: ${body}
+            name: deposit_result_message_response
         - marshal:
             description: Class→JSON変換
             json: {}
