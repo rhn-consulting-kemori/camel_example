@@ -247,11 +247,10 @@ public class RouteProcessRouteTest {
             }
         );
         camelContext.start();
-
     }
 
     @Test
-    public void testPositive() throws Exception {
+    public void test_No1_Normal() throws Exception {
 
         // Given
         dataProvider.setNormalData();
@@ -342,7 +341,33 @@ public class RouteProcessRouteTest {
 
     }
 
-    // データが空の時
-    // エラーありの時
+    @Test
+    public void test_No2_Error() throws Exception {
 
+        // Given
+        dataProvider.setErrorData();
+        Exchange exchange = ExchangeBuilder.anExchange(camelContext).withBody(dataProvider.getRoute_process_json()[0]).build();
+        setMockDirectEndpoint();
+        setMockBeanEndpoint();
+        setErrorMockHttpEndpoint();
+
+        // When
+        start.send("direct:start", exchange);
+
+        //Then
+        MockEndpoint.assertIsSatisfied(camelContext);
+        assertThat(exchange.getProperty("deposit_request"), is(dataProvider.getRoute_request()));
+        assertThat(exchange.getProperty("format-check_response"), is(dataProvider.getFormat_check_response()));
+        assertThat(exchange.getProperty("deposit_result_message_response"), is(dataProvider.getDeposit_result_message_response()));
+
+    }
+
+    // Mock設定: Http: Error
+    public void setErrorMockHttpEndpoint() {
+        mock_http_deposit_entry_check_service.expectedMessageCount(0);
+        mock_http_deposit_category_service.expectedMessageCount(0);
+        mock_http_check_available_deposit_amount_service.expectedMessageCount(0);
+        mock_http_deposit_allocation_service.expectedMessageCount(0);
+        mock_http_deposit_service.expectedMessageCount(0);
+    }
 }

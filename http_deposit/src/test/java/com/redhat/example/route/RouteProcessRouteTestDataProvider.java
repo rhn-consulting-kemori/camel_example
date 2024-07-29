@@ -257,6 +257,102 @@ public class RouteProcessRouteTestDataProvider {
         }
     }
 
+    // Error Data
+    public void setErrorData() {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        /** route_request */
+        try {
+            route_request = mapper.readValue(getError_Route_process_request_json(),KijitsuNyukinRequestEntity.class);
+        } catch(JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        /** format_check */
+        format_check_request = route_request;
+        // ----------------------------------------------------------------
+        format_check_response = new FormatCheckResponseType();
+        format_check_response.setResponse_result("1");
+        format_check_response.setErr_code("E01");
+        format_check_response.setErr_context("CardNumber not Numeric Error");
+    
+        /** deposit_entry_check */
+        deposit_entry_check_request = new DepositEntryCheckRequestType();
+        deposit_entry_check_response = new DepositEntryCheckResponseType();
+
+        /** deposit_category */
+        deposit_category_request = new DepositCategoryRequestType();
+        deposit_category_response = new DepositCategoryResponseType();
+        
+        /** check_available_deposit_amount */
+        check_available_deposit_amount_request = new CheckAvailableDepositAmountRequestType();
+        check_available_deposit_amount_response = new CheckAvailableDepositAmountResponseType();
+        
+        /** deposit_allocation */
+        deposit_allocation_request = new DepositAllocationRequestType();
+        deposit_allocation_response = new DepositAllocationResponseType();
+
+        /** deposit */
+        deposit_request = new DepositRequestType();
+        deposit_response = new DepositResponseType();
+
+        /** deposit_result_message */
+        deposit_result_message_request = new DepositResultMessageRequestType();
+        deposit_result_message_request.setDeposit_request(route_request);
+        deposit_result_message_request.setDeposit_result("1");
+        deposit_result_message_request.setErr_code("E01");
+        deposit_result_message_request.setErr_context("CardNumber not Numeric Error");
+        deposit_result_message_request.setDeposit_category_code("");
+        deposit_result_message_request.setDeposit_data(new DepositDataEntity());
+        //----------------------------------------------------------------
+        deposit_result_message_response = new KijitsuNyukinResponseEntity();
+        deposit_result_message_response.setDeposit_request(route_request);
+        deposit_result_message_response.setDeposit_result("1");
+        deposit_result_message_response.setErr_code("E01");
+        deposit_result_message_response.setErr_context("CardNumber not Numeric Error");
+
+        /** route_response */
+        route_response = deposit_result_message_response;
+
+        /** Set Json */
+        setErrorJsonData();
+    }
+
+    // Error Json Data
+    public void setErrorJsonData() {
+        ObjectMapper mapper = new ObjectMapper();
+        //mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        try {
+            route_process_json = new String[] {
+                mapper.writeValueAsString(route_request), 
+                mapper.writeValueAsString(route_response)
+            };
+            format_check_json = new String[] {
+                mapper.writeValueAsString(format_check_request), 
+                mapper.writeValueAsString(format_check_response), 
+                mapper.writeValueAsString(format_check_response)
+            };
+            // ----------------------------------------------------------------
+            deposit_entry_check_json = new String[] {"","",""};
+            deposit_category_json = new String[] {"","",""};
+            check_available_deposit_amount_json = new String[] {"","",""};
+            deposit_allocation_json = new String[] {"","",""};
+            deposit_json = new String[] {"","",""};
+            // ----------------------------------------------------------------
+            deposit_result_message_json = new String[] {
+                mapper.writeValueAsString(deposit_result_message_request),
+                mapper.writeValueAsString(deposit_result_message_response),
+                mapper.writeValueAsString(deposit_result_message_response)
+            };
+
+        } catch(JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        
+    }
+
     /** route_process_request_json */
     public String getRoute_process_request_json() {
         String route_process_request_json = """
@@ -350,5 +446,22 @@ public class RouteProcessRouteTestDataProvider {
             }
             """;
         return deposit_data_json;
+    }
+
+    /** route_process_request_json: Error */
+    public String getError_Route_process_request_json() {
+        String route_process_request_json = """
+            {
+                "REQUEST_ID": "A-002", 
+                "CARD_NUMBER": "3540000100010002", 
+                "CUSTOMER_CONTRACT_NUMBER": "A000000002", 
+                "CUSTOMER_BILLING_DUE_DATE": "20240515", 
+                "CONTRACT_SETTLEMENT_DATE":"20240610", 
+                "DEPOSIT_DATE": "20240611", 
+                "DEPOSIT_AMOUNT": 10000, 
+                "EXCESS_MONEY_HANDLING_CATEGORY": "9"
+            }
+            """;
+        return route_process_request_json;
     }
 }
