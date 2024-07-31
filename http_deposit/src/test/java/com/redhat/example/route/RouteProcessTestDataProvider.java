@@ -30,8 +30,11 @@ import com.redhat.example.entity.DepositDataEntity;
 
 @Data
 @Component
-public class RouteProcessRouteTestDataProvider {
+public class RouteProcessTestDataProvider {
     
+    /** Test Config */
+    public static final boolean RULE_INTEGRATION_FLG = true;
+
     /** Expected Json Data */
     String[] route_process_json;
     String[] format_check_json;
@@ -274,8 +277,8 @@ public class RouteProcessRouteTestDataProvider {
         // ----------------------------------------------------------------
         format_check_response = new FormatCheckResponseType();
         format_check_response.setResponse_result("1");
-        format_check_response.setErr_code("E01");
-        format_check_response.setErr_context("CardNumber not Numeric Error");
+        format_check_response.setErr_code("E02");
+        format_check_response.setErr_context("customer_contract_number: numeric error");
     
         /** deposit_entry_check */
         deposit_entry_check_request = new DepositEntryCheckRequestType();
@@ -301,16 +304,16 @@ public class RouteProcessRouteTestDataProvider {
         deposit_result_message_request = new DepositResultMessageRequestType();
         deposit_result_message_request.setDeposit_request(route_request);
         deposit_result_message_request.setDeposit_result("1");
-        deposit_result_message_request.setErr_code("E01");
-        deposit_result_message_request.setErr_context("CardNumber not Numeric Error");
+        deposit_result_message_request.setErr_code("E02");
+        deposit_result_message_request.setErr_context("customer_contract_number: numeric error");
         deposit_result_message_request.setDeposit_category_code("");
         deposit_result_message_request.setDeposit_data(new DepositDataEntity());
         //----------------------------------------------------------------
         deposit_result_message_response = new KijitsuNyukinResponseEntity();
         deposit_result_message_response.setDeposit_request(route_request);
         deposit_result_message_response.setDeposit_result("1");
-        deposit_result_message_response.setErr_code("E01");
-        deposit_result_message_response.setErr_context("CardNumber not Numeric Error");
+        deposit_result_message_response.setErr_code("E02");
+        deposit_result_message_response.setErr_context("customer_contract_number: numeric error");
 
         /** route_response */
         route_response = deposit_result_message_response;

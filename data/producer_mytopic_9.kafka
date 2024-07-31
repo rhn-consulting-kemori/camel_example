@@ -1,0 +1,6 @@
+PRODUCER camel-example-kafka-PRODUCER Kafka-Pod
+topic: mytopic
+{
+}
+
+###

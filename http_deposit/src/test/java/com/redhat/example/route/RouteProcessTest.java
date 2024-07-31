@@ -24,18 +24,22 @@ import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.MockEndpoints;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.context.SpringBootTest;
+// ----------------------------------------------------------------
+import com.redhat.example.route.RouteProcessTestDataProvider;
 
 @SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
-public class RouteProcessRouteTest {
+public class RouteProcessTest {
 
     /** Route ID */
     private static final String TARGET_ROUTE_ID_ROUTE_PROCESS = "route-process";
@@ -55,7 +59,7 @@ public class RouteProcessRouteTest {
 
     /** Expected Data */
     @Autowired
-    RouteProcessRouteTestDataProvider dataProvider;
+    RouteProcessTestDataProvider dataProvider;
 
     /** Mock EndPoint */ 
     // ----------------------------------------------------------------
@@ -172,7 +176,7 @@ public class RouteProcessRouteTest {
             TARGET_ROUTE_ID_ROUTE_PROCESS,
             advice -> {
                 advice.replaceFromWith("direct:start");
-                advice.weaveById("to-kafka-deposit-end").replace().to("mock:to-kafka-deposit-end");
+                advice.weaveById("to-kafka-deposit-end").replace().to("mock:to-kafka-deposit-end").id("to-kafka-deposit-end");
                 advice.mockEndpoints("direct:.+");
             }
         );
@@ -188,7 +192,10 @@ public class RouteProcessRouteTest {
             TARGET_ROUTE_ID_FORMAT_CHECK,
             advice -> {
                 advice.mockEndpoints("direct:.+");
-                advice.weaveById("bean-format-check-rule").replace().to("mock:bean-format-check-rule");
+                if(!dataProvider.RULE_INTEGRATION_FLG) {
+                    advice.weaveById("bean-format-check-rule").replace().to("mock:bean-format-check-rule").id("bean-format-check-rule");
+                }
+                
             }
         );
         AdviceWith.adviceWith(
@@ -196,7 +203,7 @@ public class RouteProcessRouteTest {
             TARGET_ROUTE_ID_DEPOSIT_ENTRY_CHECK,
             advice -> {
                 advice.mockEndpoints("direct:.+");
-                advice.weaveById("to-deposit-entry-check-service").replace().to("mock:http-deposit-entry-check-service");
+                advice.weaveById("to-deposit-entry-check-service").replace().to("mock:http-deposit-entry-check-service").id("to-deposit-entry-check-service");
             }
         );
         AdviceWith.adviceWith(
@@ -204,7 +211,7 @@ public class RouteProcessRouteTest {
             TARGET_ROUTE_ID_DEPOSIT_CATEGORY,
             advice -> {
                 advice.mockEndpoints("direct:.+");
-                advice.weaveById("to-deposit-category-service").replace().to("mock:http-deposit-category-service");
+                advice.weaveById("to-deposit-category-service").replace().to("mock:http-deposit-category-service").id("to-deposit-category-service");
             }
         );
         AdviceWith.adviceWith(
@@ -212,7 +219,7 @@ public class RouteProcessRouteTest {
             TARGET_ROUTE_ID_CHECK_AVAILABLE_DEPOSIT_AMOUNT,
             advice -> {
                 advice.mockEndpoints("direct:.+");
-                advice.weaveById("to-check-available-deposit-amount-service").replace().to("mock:http-check-available-deposit-amount-service");
+                advice.weaveById("to-check-available-deposit-amount-service").replace().to("mock:http-check-available-deposit-amount-service").id("to-check-available-deposit-amount-service");
             }
         );
         AdviceWith.adviceWith(
@@ -220,7 +227,7 @@ public class RouteProcessRouteTest {
             TARGET_ROUTE_ID_DEPOSIT_ALLOCATION,
             advice -> {
                 advice.mockEndpoints("direct:.+");
-                advice.weaveById("to-deposit-allocation-service").replace().to("mock:http-deposit-allocation-service");
+                advice.weaveById("to-deposit-allocation-service").replace().to("mock:http-deposit-allocation-service").id("to-deposit-allocation-service");
             }
         );
         AdviceWith.adviceWith(
@@ -228,7 +235,7 @@ public class RouteProcessRouteTest {
             TARGET_ROUTE_ID_DEPOSIT,
             advice -> {
                 advice.mockEndpoints("direct:.+");
-                advice.weaveById("to-deposit-service").replace().to("mock:http-deposit-service");
+                advice.weaveById("to-deposit-service").replace().to("mock:http-deposit-service").id("to-deposit-service");
             }
         );
         AdviceWith.adviceWith(
@@ -236,7 +243,9 @@ public class RouteProcessRouteTest {
             TARGET_ROUTE_ID_DEPOSIT_RESULT_MESSAGE,
             advice -> {
                 advice.mockEndpoints("direct:.+");
-                advice.weaveById("bean-deposit-result-message-rule").replace().to("mock:bean-deposit-result-message-rule");
+                if(!dataProvider.RULE_INTEGRATION_FLG) {
+                    advice.weaveById("bean-deposit-result-message-rule").replace().to("mock:bean-deposit-result-message-rule").id("bean-deposit-result-message-rule");
+                }
             }
         );
         AdviceWith.adviceWith(
@@ -250,33 +259,64 @@ public class RouteProcessRouteTest {
     }
 
     @Test
-    public void test_No1_Normal() throws Exception {
+    public void testRun() throws Exception {
+        
+        // Normal Test
+        testNormal();
+        MockEndpoint.resetMocks(camelContext);
+
+        // Error Test
+        testError();
+        MockEndpoint.resetMocks(camelContext);
+        
+    }
+
+    /** Normal Test */
+    public void testNormal() throws Exception {
 
         // Given
         dataProvider.setNormalData();
-        Exchange exchange = ExchangeBuilder.anExchange(camelContext).withBody(dataProvider.getRoute_process_json()[0]).build();
-        setMockDirectEndpoint();
-        setMockBeanEndpoint();
+        if(!dataProvider.RULE_INTEGRATION_FLG) {
+            setMockBeanEndpoint();
+        }
+        System.out.println("Rule Integration: " + dataProvider.RULE_INTEGRATION_FLG);
         setMockHttpEndpoint();
+        setNormalAssertCondition();
 
         // When
-        start.send("direct:start", exchange);
+        start.sendBody("direct:start", dataProvider.getRoute_process_json()[0]);
 
         //Then
         MockEndpoint.assertIsSatisfied(camelContext);
-        assertThat(exchange.getProperty("deposit_request"), is(dataProvider.getRoute_request()));
-        assertThat(exchange.getProperty("format-check_response"), is(dataProvider.getFormat_check_response()));
-        assertThat(exchange.getProperty("deposit_entry_check_response"), is(dataProvider.getDeposit_entry_check_response()));
-        assertThat(exchange.getProperty("deposit_category_code"), is(dataProvider.getDeposit_category_response().getDeposit_category_code()));
-        assertThat(exchange.getProperty("deposit_available_amount_data"), is(dataProvider.getCheck_available_deposit_amount_response().getDeposit_available_amount_data()));
-        assertThat(exchange.getProperty("deposit_allocation_data"), is(dataProvider.getDeposit_allocation_response().getDeposit_allocation_data()));
-        assertThat(exchange.getProperty("deposit_data"), is(dataProvider.getDeposit_response().getDeposit_data()));
-        assertThat(exchange.getProperty("deposit_result_message_response"), is(dataProvider.getDeposit_result_message_response()));
 
     }
 
-    // Mock設定: Direct
-    public void setMockDirectEndpoint() {
+    /** Error Test */
+    public void testError() throws Exception {
+
+        // Given
+        dataProvider.setErrorData();
+        if(!dataProvider.RULE_INTEGRATION_FLG) {
+            setMockBeanEndpoint();
+        }
+        System.out.println("Rule Integration: " + dataProvider.RULE_INTEGRATION_FLG);
+        setMockHttpEndpoint();
+        setErrorAssertCondition();
+
+        // When
+        start.sendBody("direct:start", dataProvider.getRoute_process_json()[0]);
+
+        //Then
+        MockEndpoint.assertIsSatisfied(camelContext);
+
+    }
+
+    // Assert Condition: Normal
+    public void setNormalAssertCondition() {
+
+        // ----------------------------------------------------------------
+        // Mock Direct Endpoint: Message Count
+        // ----------------------------------------------------------------
         mock_direct_initial_process.expectedMessageCount(1);
         mock_direct_format_check.expectedMessageCount(1);
         mock_direct_deposit_entry_check.expectedMessageCount(1);
@@ -287,18 +327,76 @@ public class RouteProcessRouteTest {
         mock_direct_deposit_result_message.expectedMessageCount(1);
         mock_to_kafka_deposit_end.expectedMessageCount(1);
         mock_direct_finish_process.expectedMessageCount(1);
+        // ----------------------------------------------------------------
+        if(!dataProvider.RULE_INTEGRATION_FLG) {
+            mock_bean_format_check_rule.expectedMessageCount(1);
+            mock_bean_deposit_result_message_rule.expectedMessageCount(1);
+        }
+        mock_http_deposit_entry_check_service.expectedMessageCount(1);
+        mock_http_deposit_category_service.expectedMessageCount(1);
+        mock_http_check_available_deposit_amount_service.expectedMessageCount(1);
+        mock_http_deposit_allocation_service.expectedMessageCount(1);
+        mock_http_deposit_service.expectedMessageCount(1);
+        
+
+        // ----------------------------------------------------------------
+        // Set Assert Exchange Property
+        // ----------------------------------------------------------------
+        mock_direct_finish_process.expectedPropertyReceived("deposit_request", dataProvider.getRoute_request());
+        mock_direct_finish_process.expectedPropertyReceived("format-check_response", dataProvider.getFormat_check_response());
+        mock_direct_finish_process.expectedPropertyReceived("deposit_entry_check_response", dataProvider.getDeposit_entry_check_response());
+        mock_direct_finish_process.expectedPropertyReceived("deposit_category_code", dataProvider.getDeposit_category_response().getDeposit_category_code());
+        mock_direct_finish_process.expectedPropertyReceived("deposit_available_amount_data", dataProvider.getCheck_available_deposit_amount_response().getDeposit_available_amount_data());
+        mock_direct_finish_process.expectedPropertyReceived("deposit_allocation_data", dataProvider.getDeposit_allocation_response().getDeposit_allocation_data());
+        mock_direct_finish_process.expectedPropertyReceived("deposit_data", dataProvider.getDeposit_response().getDeposit_data());
+        mock_direct_finish_process.expectedPropertyReceived("deposit_result_message_response", dataProvider.getDeposit_result_message_response());
+
+    }
+
+    // Assert Condition: Error
+    public void setErrorAssertCondition() {
+
+        // ----------------------------------------------------------------
+        // Mock Direct Endpoint: Message Count
+        // ----------------------------------------------------------------
+        mock_direct_initial_process.expectedMessageCount(1);
+        mock_direct_format_check.expectedMessageCount(1);
+        mock_direct_deposit_entry_check.expectedMessageCount(1);
+        mock_direct_deposit_category.expectedMessageCount(1);
+        mock_direct_check_available_deposit_amount.expectedMessageCount(1);
+        mock_direct_deposit_allocation.expectedMessageCount(1);
+        mock_direct_deposit.expectedMessageCount(1);
+        mock_direct_deposit_result_message.expectedMessageCount(1);
+        mock_to_kafka_deposit_end.expectedMessageCount(1);
+        mock_direct_finish_process.expectedMessageCount(1);
+        // ----------------------------------------------------------------
+        if(!dataProvider.RULE_INTEGRATION_FLG) {
+            mock_bean_format_check_rule.expectedMessageCount(1);
+            mock_bean_deposit_result_message_rule.expectedMessageCount(1);
+        }
+        mock_http_deposit_entry_check_service.expectedMessageCount(0);
+        mock_http_deposit_category_service.expectedMessageCount(0);
+        mock_http_check_available_deposit_amount_service.expectedMessageCount(0);
+        mock_http_deposit_allocation_service.expectedMessageCount(0);
+        mock_http_deposit_service.expectedMessageCount(0);
+
+        // ----------------------------------------------------------------
+        // Set Assert Exchange Property
+        // ----------------------------------------------------------------
+        mock_direct_finish_process.expectedPropertyReceived("deposit_request", dataProvider.getRoute_request());
+        mock_direct_finish_process.expectedPropertyReceived("format-check_response", dataProvider.getFormat_check_response());
+        mock_direct_finish_process.expectedPropertyReceived("deposit_result_message_response", dataProvider.getDeposit_result_message_response());
+
     }
 
     // Mock設定: Bean
     public void setMockBeanEndpoint() {
-        mock_bean_format_check_rule.whenExchangeReceived(
-            1,
+        mock_bean_format_check_rule.whenAnyExchangeReceived(
             e -> { 
                 assertThat(e.getMessage().getBody(), is(dataProvider.getFormat_check_request()));
-                e.getMessage().setBody(dataProvider.getFormat_check_response()); 
+                e.getMessage().setBody(dataProvider.getFormat_check_response());
             });
-        mock_bean_deposit_result_message_rule.whenExchangeReceived(
-            1,
+        mock_bean_deposit_result_message_rule.whenAnyExchangeReceived(
             e -> { 
                 assertThat(e.getMessage().getBody(), is(dataProvider.getDeposit_result_message_request()));
                 e.getMessage().setBody(dataProvider.getDeposit_result_message_response()); 
@@ -308,32 +406,27 @@ public class RouteProcessRouteTest {
     // Mock設定: Http
     public void setMockHttpEndpoint() {
         ObjectMapper mapper = new ObjectMapper();
-        mock_http_deposit_entry_check_service.whenExchangeReceived(
-            1,
+        mock_http_deposit_entry_check_service.whenAnyExchangeReceived(
             e -> { 
                 assertEquals(mapper.readTree(dataProvider.getDeposit_entry_check_json()[0]), mapper.readTree(e.getMessage().getBody().toString()));
                 e.getMessage().setBody(dataProvider.getDeposit_entry_check_json()[1]); 
             });
-        mock_http_deposit_category_service.whenExchangeReceived(
-            1,
+        mock_http_deposit_category_service.whenAnyExchangeReceived(
             e -> { 
                 assertEquals(mapper.readTree(dataProvider.getDeposit_category_json()[0]), mapper.readTree(e.getMessage().getBody().toString()));
                 e.getMessage().setBody(dataProvider.getDeposit_category_json()[1]); 
             });
-        mock_http_check_available_deposit_amount_service.whenExchangeReceived(
-            1,
+        mock_http_check_available_deposit_amount_service.whenAnyExchangeReceived(
             e -> { 
                 assertEquals(mapper.readTree(dataProvider.getCheck_available_deposit_amount_json()[0]), mapper.readTree(e.getMessage().getBody().toString()));
                 e.getMessage().setBody(dataProvider.getCheck_available_deposit_amount_json()[1]); 
             });
-        mock_http_deposit_allocation_service.whenExchangeReceived(
-            1,
+        mock_http_deposit_allocation_service.whenAnyExchangeReceived(
             e -> { 
                 assertEquals(mapper.readTree(dataProvider.getDeposit_allocation_json()[0]), mapper.readTree(e.getMessage().getBody().toString()));
                 e.getMessage().setBody(dataProvider.getDeposit_allocation_json()[1]); 
             });
-        mock_http_deposit_service.whenExchangeReceived(
-            1,
+        mock_http_deposit_service.whenAnyExchangeReceived(
             e -> { 
                 assertEquals(mapper.readTree(dataProvider.getDeposit_json()[0]), mapper.readTree(e.getMessage().getBody().toString()));
                 e.getMessage().setBody(dataProvider.getDeposit_json()[1]); 
@@ -341,33 +434,4 @@ public class RouteProcessRouteTest {
 
     }
 
-    @Test
-    public void test_No2_Error() throws Exception {
-
-        // Given
-        dataProvider.setErrorData();
-        Exchange exchange = ExchangeBuilder.anExchange(camelContext).withBody(dataProvider.getRoute_process_json()[0]).build();
-        setMockDirectEndpoint();
-        setMockBeanEndpoint();
-        setErrorMockHttpEndpoint();
-
-        // When
-        start.send("direct:start", exchange);
-
-        //Then
-        MockEndpoint.assertIsSatisfied(camelContext);
-        assertThat(exchange.getProperty("deposit_request"), is(dataProvider.getRoute_request()));
-        assertThat(exchange.getProperty("format-check_response"), is(dataProvider.getFormat_check_response()));
-        assertThat(exchange.getProperty("deposit_result_message_response"), is(dataProvider.getDeposit_result_message_response()));
-
-    }
-
-    // Mock設定: Http: Error
-    public void setErrorMockHttpEndpoint() {
-        mock_http_deposit_entry_check_service.expectedMessageCount(0);
-        mock_http_deposit_category_service.expectedMessageCount(0);
-        mock_http_check_available_deposit_amount_service.expectedMessageCount(0);
-        mock_http_deposit_allocation_service.expectedMessageCount(0);
-        mock_http_deposit_service.expectedMessageCount(0);
-    }
 }
