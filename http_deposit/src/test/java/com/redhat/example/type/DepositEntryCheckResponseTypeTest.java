@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-// Test POJO class:フォーマットチェック応答
-public class FormatCheckResponseTypeTest {
+// Test POJO class:入金受付チェック応答
+public class DepositEntryCheckResponseTypeTest {
 
     // Target POJO Class
-    private FormatCheckResponseType obj;
+    private DepositEntryCheckResponseType obj;
 
     // Expected Type Map
     private Map<String, String> expected_type_map;
@@ -25,6 +25,7 @@ public class FormatCheckResponseTypeTest {
     @BeforeEach
     public void beforeEach() {
         expected_type_map = new HashMap<String, String>();
+        expected_type_map.put("service_request", "DepositEntryCheckRequestType");
         expected_type_map.put("response_result", "String");
         expected_type_map.put("err_code", "String");
         expected_type_map.put("err_context", "String");
@@ -32,10 +33,10 @@ public class FormatCheckResponseTypeTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testFormatCheckResponseType(){
+    public void testDepositEntryCheckResponseType(){
         try {
-            obj = (FormatCheckResponseType.class).getDeclaredConstructor().newInstance();
-            Field[] fields = FormatCheckResponseType.class.getDeclaredFields();
+            obj = (DepositEntryCheckResponseType.class).getDeclaredConstructor().newInstance();
+            Field[] fields = DepositEntryCheckResponseType.class.getDeclaredFields();
             for(Field field : fields){
 
                 String fieldName = field.getName();
@@ -65,10 +66,12 @@ public class FormatCheckResponseTypeTest {
                 } else if (dataType.isAssignableFrom(List.class)) {
                     List<String> list = new ArrayList<String>();
                     valueToSet = list;
+                } else if (dataType.isAssignableFrom(DepositEntryCheckRequestType.class)) {
+                    valueToSet = new DepositEntryCheckRequestType();
                 } 
 
-                Method getterMethod = FormatCheckResponseType.class.getMethod(getter);
-                Method setterMethod = FormatCheckResponseType.class.getMethod(setter, getterMethod.getReturnType());
+                Method getterMethod = DepositEntryCheckResponseType.class.getMethod(getter);
+                Method setterMethod = DepositEntryCheckResponseType.class.getMethod(setter, getterMethod.getReturnType());
                 setterMethod.invoke(obj, valueToSet);
                 Object result = getterMethod.invoke(obj);
 

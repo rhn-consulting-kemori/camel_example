@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-// Test POJO class:フォーマットチェック応答
-public class FormatCheckResponseTypeTest {
+// Test POJO class:入金種類区分要求
+public class DepositCategoryRequestTypeTest {
 
     // Target POJO Class
-    private FormatCheckResponseType obj;
+    private DepositCategoryRequestType obj;
 
     // Expected Type Map
     private Map<String, String> expected_type_map;
@@ -25,17 +25,19 @@ public class FormatCheckResponseTypeTest {
     @BeforeEach
     public void beforeEach() {
         expected_type_map = new HashMap<String, String>();
-        expected_type_map.put("response_result", "String");
-        expected_type_map.put("err_code", "String");
-        expected_type_map.put("err_context", "String");
+        expected_type_map.put("request_id", "String");
+        expected_type_map.put("customer_contract_number", "String");
+        expected_type_map.put("customer_billing_due_date", "String");
+        expected_type_map.put("contract_settlement_date", "String");
+        expected_type_map.put("deposit_date", "String");
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testFormatCheckResponseType(){
+    public void testDepositCategoryRequestType(){
         try {
-            obj = (FormatCheckResponseType.class).getDeclaredConstructor().newInstance();
-            Field[] fields = FormatCheckResponseType.class.getDeclaredFields();
+            obj = (DepositCategoryRequestType.class).getDeclaredConstructor().newInstance();
+            Field[] fields = DepositCategoryRequestType.class.getDeclaredFields();
             for(Field field : fields){
 
                 String fieldName = field.getName();
@@ -67,8 +69,8 @@ public class FormatCheckResponseTypeTest {
                     valueToSet = list;
                 } 
 
-                Method getterMethod = FormatCheckResponseType.class.getMethod(getter);
-                Method setterMethod = FormatCheckResponseType.class.getMethod(setter, getterMethod.getReturnType());
+                Method getterMethod = DepositCategoryRequestType.class.getMethod(getter);
+                Method setterMethod = DepositCategoryRequestType.class.getMethod(setter, getterMethod.getReturnType());
                 setterMethod.invoke(obj, valueToSet);
                 Object result = getterMethod.invoke(obj);
 

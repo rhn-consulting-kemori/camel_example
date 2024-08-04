@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 // Business Object
@@ -26,7 +25,6 @@ public class FormatCheckRuleTest {
     @ParameterizedTest
     @DisplayName("バリデーションリスト")
     @CsvFileSource(resources = "/format_check_rule_test.csv", numLinesToSkip = 1)
-    //@CsvSource({ "A-001,3540000100010001,0000000001,20240515,20240610,20240611,10000,9,0,'','',A-001: NORMAL DATA OK" })
     void test_normal(String request_id, String card_number, String customer_contract_number, String customer_billing_due_date, String contract_settlement_date, 
         String deposit_date, long deposit_amount, String excess_money_handling_category, String response_result, String err_code, String err_context, String case_message) {
 

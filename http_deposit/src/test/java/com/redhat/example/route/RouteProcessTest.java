@@ -2,8 +2,6 @@ package com.redhat.example.route;
 
 // Util
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.core.JsonProcessingException;
 // ----------------------------------------------------------------
 // Spring,Junit
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,26 +10,14 @@ import static org.hamcrest.CoreMatchers.is;
 // ----------------------------------------------------------------
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.Produce;
-import org.apache.camel.ServiceStatus;
-import org.apache.camel.builder.ExchangeBuilder;
 import org.apache.camel.builder.AdviceWith;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
-import org.apache.camel.test.spring.junit5.MockEndpoints;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.context.SpringBootTest;
 // ----------------------------------------------------------------
 import com.redhat.example.route.RouteProcessTestDataProvider;
@@ -65,7 +51,7 @@ public class RouteProcessTest {
     // ----------------------------------------------------------------
     // route: route-process
     // ----------------------------------------------------------------
-    /** id: from-kafka-deposit, uri: kafka:{{app.input-topic-name}} -> direct:start */
+    /** id: from-chosabu-kijitsu-deposit-service, uri: kafka:{{app.input-topic-name}} -> direct:start */
     @Autowired
     protected ProducerTemplate start;
 
@@ -101,9 +87,9 @@ public class RouteProcessTest {
     @EndpointInject("mock:direct:deposit-result-message")
     protected MockEndpoint mock_direct_deposit_result_message;
 
-    /** id: to-kafka-deposit-end, uri: kafka:{{app.output-topic-name}} -> mock:to-kafka-deposit-end */
-    @EndpointInject("mock:to-kafka-deposit-end")
-    protected MockEndpoint mock_to_kafka_deposit_end;
+    /** id: to-chosabu-kijitsu-deposit-service, uri: kafka:{{app.output-topic-name}} -> mock:to-kafka-service-end */
+    @EndpointInject("mock:to-kafka-service-end")
+    protected MockEndpoint mock_to_kafka_service_end;
 
     /** id: to-finish-process, uri: direct:finish-process -> mock:direct:finish-process */
     @EndpointInject("mock:direct:finish-process")
@@ -115,7 +101,7 @@ public class RouteProcessTest {
     // ----------------------------------------------------------------
     // route: format-check
     // ----------------------------------------------------------------
-    /** id: to-format-check, uri: direct:format-check -> mock:direct:format-check */
+    /** id: from-format-check, uri: direct:format-check -> mock:direct:format-check */
     /** id: bean-format-check-rule, uri: "" -> mock:bean-format-check-rule */
     @EndpointInject("mock:bean-format-check-rule")
     protected MockEndpoint mock_bean_format_check_rule;
@@ -136,7 +122,7 @@ public class RouteProcessTest {
     // ----------------------------------------------------------------
     // route: check-available-deposit-amount
     // ----------------------------------------------------------------
-    /** id: to-check-available-deposit-amount, uri: direct:check-available-deposit-amount -> mock:direct:check-available-deposit-amount */
+    /** id: from-check-available-deposit-amount, uri: direct:check-available-deposit-amount -> mock:direct:check-available-deposit-amount */
     /** id: to-check-available-deposit-amount-service, uri: http://{{app.url-check-available-deposit-amount}} -> mock:http-check-available-deposit-amount-service */
     @EndpointInject("mock:http-check-available-deposit-amount-service")
     protected MockEndpoint mock_http_check_available_deposit_amount_service;
@@ -176,7 +162,7 @@ public class RouteProcessTest {
             TARGET_ROUTE_ID_ROUTE_PROCESS,
             advice -> {
                 advice.replaceFromWith("direct:start");
-                advice.weaveById("to-kafka-deposit-end").replace().to("mock:to-kafka-deposit-end").id("to-kafka-deposit-end");
+                advice.weaveById("to-chosabu-kijitsu-deposit-service").replace().to("mock:to-kafka-service-end").id("to-kafka-service-end");
                 advice.mockEndpoints("direct:.+");
             }
         );
@@ -325,7 +311,7 @@ public class RouteProcessTest {
         mock_direct_deposit_allocation.expectedMessageCount(1);
         mock_direct_deposit.expectedMessageCount(1);
         mock_direct_deposit_result_message.expectedMessageCount(1);
-        mock_to_kafka_deposit_end.expectedMessageCount(1);
+        mock_to_kafka_service_end.expectedMessageCount(1);
         mock_direct_finish_process.expectedMessageCount(1);
         // ----------------------------------------------------------------
         if(!dataProvider.RULE_INTEGRATION_FLG) {
@@ -338,18 +324,17 @@ public class RouteProcessTest {
         mock_http_deposit_allocation_service.expectedMessageCount(1);
         mock_http_deposit_service.expectedMessageCount(1);
         
-
         // ----------------------------------------------------------------
         // Set Assert Exchange Property
         // ----------------------------------------------------------------
-        mock_direct_finish_process.expectedPropertyReceived("deposit_request", dataProvider.getRoute_request());
+        mock_direct_finish_process.expectedPropertyReceived("process_request", dataProvider.getRoute_request());
         mock_direct_finish_process.expectedPropertyReceived("format-check_response", dataProvider.getFormat_check_response());
-        mock_direct_finish_process.expectedPropertyReceived("deposit_entry_check_response", dataProvider.getDeposit_entry_check_response());
+        mock_direct_finish_process.expectedPropertyReceived("response_result", dataProvider.getDeposit_entry_check_response().getResponse_result());
         mock_direct_finish_process.expectedPropertyReceived("deposit_category_code", dataProvider.getDeposit_category_response().getDeposit_category_code());
         mock_direct_finish_process.expectedPropertyReceived("deposit_available_amount_data", dataProvider.getCheck_available_deposit_amount_response().getDeposit_available_amount_data());
         mock_direct_finish_process.expectedPropertyReceived("deposit_allocation_data", dataProvider.getDeposit_allocation_response().getDeposit_allocation_data());
         mock_direct_finish_process.expectedPropertyReceived("deposit_data", dataProvider.getDeposit_response().getDeposit_data());
-        mock_direct_finish_process.expectedPropertyReceived("deposit_result_message_response", dataProvider.getDeposit_result_message_response());
+        mock_direct_finish_process.expectedPropertyReceived("deposit-result-message_response", dataProvider.getDeposit_result_message_response());
 
     }
 
@@ -367,7 +352,7 @@ public class RouteProcessTest {
         mock_direct_deposit_allocation.expectedMessageCount(1);
         mock_direct_deposit.expectedMessageCount(1);
         mock_direct_deposit_result_message.expectedMessageCount(1);
-        mock_to_kafka_deposit_end.expectedMessageCount(1);
+        mock_to_kafka_service_end.expectedMessageCount(1);
         mock_direct_finish_process.expectedMessageCount(1);
         // ----------------------------------------------------------------
         if(!dataProvider.RULE_INTEGRATION_FLG) {
@@ -383,9 +368,9 @@ public class RouteProcessTest {
         // ----------------------------------------------------------------
         // Set Assert Exchange Property
         // ----------------------------------------------------------------
-        mock_direct_finish_process.expectedPropertyReceived("deposit_request", dataProvider.getRoute_request());
+        mock_direct_finish_process.expectedPropertyReceived("process_request", dataProvider.getRoute_request());
         mock_direct_finish_process.expectedPropertyReceived("format-check_response", dataProvider.getFormat_check_response());
-        mock_direct_finish_process.expectedPropertyReceived("deposit_result_message_response", dataProvider.getDeposit_result_message_response());
+        mock_direct_finish_process.expectedPropertyReceived("deposit-result-message_response", dataProvider.getDeposit_result_message_response());
 
     }
 

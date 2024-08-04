@@ -2,6 +2,7 @@ package com.redhat.example.entity;
 
 import lombok.Data;
 
+// 入金可能額情報
 @Data
 public class AvailableDepositAmountDataEntity {
 
@@ -10,5 +11,5 @@ public class AvailableDepositAmountDataEntity {
 
     /** 入金可能額 */
     private SaikenCompositeUnitEntity deposit_available_amount;
-    
+
 }

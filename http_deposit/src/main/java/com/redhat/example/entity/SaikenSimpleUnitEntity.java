@@ -3,6 +3,7 @@ package com.redhat.example.entity;
 import lombok.Data;
 import java.math.BigDecimal;
 
+// 債権商品情報
 @Data
 public class SaikenSimpleUnitEntity {
 
@@ -12,16 +13,4 @@ public class SaikenSimpleUnitEntity {
     /** 利息額 */
     private BigDecimal interest_amount;
 
-    /** コンストラクタ */ 
-    public SaikenSimpleUnitEntity() {
-        this.principal_amount = BigDecimal.ZERO;
-        this.interest_amount = BigDecimal.ZERO;
-    }
-    
-     /** コンストラクタ */
-    public SaikenSimpleUnitEntity(BigDecimal principal_amount, BigDecimal interest_amount) {
-        this.setPrincipal_amount(principal_amount);
-        this.setInterest_amount(interest_amount);
-    }
-    
 }

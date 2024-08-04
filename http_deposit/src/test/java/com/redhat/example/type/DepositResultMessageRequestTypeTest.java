@@ -12,12 +12,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import com.redhat.example.entity.KijitsuNyukinRequestEntity;
+import com.redhat.example.entity.DepositDataEntity;
 
-// Test POJO class:フォーマットチェック応答
-public class FormatCheckResponseTypeTest {
+// Test POJO class:入金結果メッセージ要求
+public class DepositResultMessageRequestTypeTest {
 
     // Target POJO Class
-    private FormatCheckResponseType obj;
+    private DepositResultMessageRequestType obj;
 
     // Expected Type Map
     private Map<String, String> expected_type_map;
@@ -25,17 +27,20 @@ public class FormatCheckResponseTypeTest {
     @BeforeEach
     public void beforeEach() {
         expected_type_map = new HashMap<String, String>();
-        expected_type_map.put("response_result", "String");
+        expected_type_map.put("deposit_request", "KijitsuNyukinRequestEntity");
+        expected_type_map.put("deposit_result", "String");
         expected_type_map.put("err_code", "String");
         expected_type_map.put("err_context", "String");
+        expected_type_map.put("deposit_category_code", "String");
+        expected_type_map.put("deposit_data", "DepositDataEntity");
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testFormatCheckResponseType(){
+    public void testDepositResultMessageRequestType(){
         try {
-            obj = (FormatCheckResponseType.class).getDeclaredConstructor().newInstance();
-            Field[] fields = FormatCheckResponseType.class.getDeclaredFields();
+            obj = (DepositResultMessageRequestType.class).getDeclaredConstructor().newInstance();
+            Field[] fields = DepositResultMessageRequestType.class.getDeclaredFields();
             for(Field field : fields){
 
                 String fieldName = field.getName();
@@ -65,10 +70,14 @@ public class FormatCheckResponseTypeTest {
                 } else if (dataType.isAssignableFrom(List.class)) {
                     List<String> list = new ArrayList<String>();
                     valueToSet = list;
+                } else if (dataType.isAssignableFrom(KijitsuNyukinRequestEntity.class)) {
+                    valueToSet = new KijitsuNyukinRequestEntity();
+                } else if (dataType.isAssignableFrom(DepositDataEntity.class)) {
+                    valueToSet = new DepositDataEntity();
                 } 
 
-                Method getterMethod = FormatCheckResponseType.class.getMethod(getter);
-                Method setterMethod = FormatCheckResponseType.class.getMethod(setter, getterMethod.getReturnType());
+                Method getterMethod = DepositResultMessageRequestType.class.getMethod(getter);
+                Method setterMethod = DepositResultMessageRequestType.class.getMethod(setter, getterMethod.getReturnType());
                 setterMethod.invoke(obj, valueToSet);
                 Object result = getterMethod.invoke(obj);
 

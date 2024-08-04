@@ -1,4 +1,4 @@
-package com.redhat.example.type;
+package com.redhat.example.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-// Test POJO class:フォーマットチェック応答
-public class FormatCheckResponseTypeTest {
+// Test POJO class:債権商品情報
+public class SaikenSimpleUnitEntityTest {
 
     // Target POJO Class
-    private FormatCheckResponseType obj;
+    private SaikenSimpleUnitEntity obj;
 
     // Expected Type Map
     private Map<String, String> expected_type_map;
@@ -25,17 +25,16 @@ public class FormatCheckResponseTypeTest {
     @BeforeEach
     public void beforeEach() {
         expected_type_map = new HashMap<String, String>();
-        expected_type_map.put("response_result", "String");
-        expected_type_map.put("err_code", "String");
-        expected_type_map.put("err_context", "String");
+        expected_type_map.put("principal_amount", "BigDecimal");
+        expected_type_map.put("interest_amount", "BigDecimal");
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testFormatCheckResponseType(){
+    public void testSaikenSimpleUnitEntity(){
         try {
-            obj = (FormatCheckResponseType.class).getDeclaredConstructor().newInstance();
-            Field[] fields = FormatCheckResponseType.class.getDeclaredFields();
+            obj = (SaikenSimpleUnitEntity.class).getDeclaredConstructor().newInstance();
+            Field[] fields = SaikenSimpleUnitEntity.class.getDeclaredFields();
             for(Field field : fields){
 
                 String fieldName = field.getName();
@@ -67,8 +66,8 @@ public class FormatCheckResponseTypeTest {
                     valueToSet = list;
                 } 
 
-                Method getterMethod = FormatCheckResponseType.class.getMethod(getter);
-                Method setterMethod = FormatCheckResponseType.class.getMethod(setter, getterMethod.getReturnType());
+                Method getterMethod = SaikenSimpleUnitEntity.class.getMethod(getter);
+                Method setterMethod = SaikenSimpleUnitEntity.class.getMethod(setter, getterMethod.getReturnType());
                 setterMethod.invoke(obj, valueToSet);
                 Object result = getterMethod.invoke(obj);
 

@@ -2,10 +2,10 @@ package com.redhat.example.type;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-
 import com.redhat.example.entity.KijitsuNyukinRequestEntity;
 import com.redhat.example.entity.DepositDataEntity;
 
+// 入金結果メッセージ要求
 @Data
 @Component
 public class DepositResultMessageRequestType {
@@ -27,4 +27,5 @@ public class DepositResultMessageRequestType {
 
     /** 入金結果情報 */
     private DepositDataEntity deposit_data;
+
 }

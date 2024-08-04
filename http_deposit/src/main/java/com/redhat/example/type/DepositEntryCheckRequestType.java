@@ -4,11 +4,12 @@ import lombok.Data;
 import java.math.BigDecimal;
 import org.springframework.stereotype.Component;
 
+// 入金受付チェック要求
 @Data
 @Component
 public class DepositEntryCheckRequestType {
 
-    /** REQUEST ID */
+    /** 入金要求番号 */
     private String request_id;
 
     /** カード番号 */

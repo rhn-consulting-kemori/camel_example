@@ -1,4 +1,4 @@
-package com.redhat.example.type;
+package com.redhat.example.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,12 +12,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import com.redhat.example.entity.SaikenCompositeUnitEntity;
+import com.redhat.example.entity.SeikyuCompositeUnitEntity;
 
-// Test POJO class:フォーマットチェック応答
-public class FormatCheckResponseTypeTest {
+// Test POJO class:期日入金応答
+public class KijitsuNyukinResponseEntityTest {
 
     // Target POJO Class
-    private FormatCheckResponseType obj;
+    private KijitsuNyukinResponseEntity obj;
 
     // Expected Type Map
     private Map<String, String> expected_type_map;
@@ -25,17 +27,24 @@ public class FormatCheckResponseTypeTest {
     @BeforeEach
     public void beforeEach() {
         expected_type_map = new HashMap<String, String>();
-        expected_type_map.put("response_result", "String");
+        expected_type_map.put("deposit_request", "KijitsuNyukinRequestEntity");
+        expected_type_map.put("deposit_result", "String");
         expected_type_map.put("err_code", "String");
         expected_type_map.put("err_context", "String");
+        expected_type_map.put("deposit_category_code", "String");
+        expected_type_map.put("deposit_allocation_amount", "SaikenCompositeUnitEntity");
+        expected_type_map.put("excess_money", "BigDecimal");
+        expected_type_map.put("jeccs_deposit", "BigDecimal");
+        expected_type_map.put("estimated_billing_amount", "SeikyuCompositeUnitEntity");
+        expected_type_map.put("balance_amount", "SaikenCompositeUnitEntity");
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testFormatCheckResponseType(){
+    public void testKijitsuNyukinResponseEntity(){
         try {
-            obj = (FormatCheckResponseType.class).getDeclaredConstructor().newInstance();
-            Field[] fields = FormatCheckResponseType.class.getDeclaredFields();
+            obj = (KijitsuNyukinResponseEntity.class).getDeclaredConstructor().newInstance();
+            Field[] fields = KijitsuNyukinResponseEntity.class.getDeclaredFields();
             for(Field field : fields){
 
                 String fieldName = field.getName();
@@ -65,10 +74,16 @@ public class FormatCheckResponseTypeTest {
                 } else if (dataType.isAssignableFrom(List.class)) {
                     List<String> list = new ArrayList<String>();
                     valueToSet = list;
+                } else if (dataType.isAssignableFrom(KijitsuNyukinRequestEntity.class)) {
+                    valueToSet = new KijitsuNyukinRequestEntity();
+                } else if (dataType.isAssignableFrom(SaikenCompositeUnitEntity.class)) {
+                    valueToSet = new SaikenCompositeUnitEntity();
+                } else if (dataType.isAssignableFrom(SeikyuCompositeUnitEntity.class)) {
+                    valueToSet = new SeikyuCompositeUnitEntity();
                 } 
 
-                Method getterMethod = FormatCheckResponseType.class.getMethod(getter);
-                Method setterMethod = FormatCheckResponseType.class.getMethod(setter, getterMethod.getReturnType());
+                Method getterMethod = KijitsuNyukinResponseEntity.class.getMethod(getter);
+                Method setterMethod = KijitsuNyukinResponseEntity.class.getMethod(setter, getterMethod.getReturnType());
                 setterMethod.invoke(obj, valueToSet);
                 Object result = getterMethod.invoke(obj);
 

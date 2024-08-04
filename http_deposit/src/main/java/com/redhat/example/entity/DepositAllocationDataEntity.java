@@ -1,12 +1,12 @@
 package com.redhat.example.entity;
 
+import lombok.Data;
 import java.math.BigDecimal;
 
-import lombok.Data;
-
+// 入金充当情報
 @Data
 public class DepositAllocationDataEntity {
-    
+
     /** 入金充当額 */
     private SaikenCompositeUnitEntity deposit_allocation_amount;
 

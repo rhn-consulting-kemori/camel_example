@@ -3,6 +3,7 @@ package com.redhat.example.type;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+// フォーマットチェック応答
 @Data
 @Component
 public class FormatCheckResponseType {

@@ -1,16 +1,16 @@
 package com.redhat.example.entity;
 
-import java.util.Map;
-import java.math.BigDecimal;
 import lombok.Data;
+import java.util.Map;
 
+// 債権複合情報
 @Data
 public class SaikenCompositeUnitEntity {
 
-    /** 合計 */
+    /** 債権合計 */
     private SaikenSimpleUnitEntity total_amout;
 
-    /** 商品単位 */
+    /** 債権商品マップ */
     private Map<String, SaikenSimpleUnitEntity> products_amount_map;
-    
+
 }

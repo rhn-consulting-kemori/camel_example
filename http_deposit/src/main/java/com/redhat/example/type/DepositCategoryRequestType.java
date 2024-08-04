@@ -3,11 +3,12 @@ package com.redhat.example.type;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+// 入金種類区分要求
 @Data
 @Component
 public class DepositCategoryRequestType {
 
-    /** REQUEST ID */
+    /** 入金要求番号 */
     private String request_id;
 
     /** 顧客契約番号 */
