@@ -1,0 +1,19 @@
+request_id,card_number,customer_contract_number,customer_billing_due_date,contract_settlement_date,deposit_date,deposit_amount,excess_money_handling_category,response_result,err_code, err_context,case_message
+A-001,3540000100010001,0000000001,20240515,20240610,20240611,10000,9,0,"","",A-001: OK-NORMAL DATA
+"",3540000100010002,0000000002,20240515,20240610,20240611,10000,9,1,E01,request_id: null error,A-002: NG-request_id is Null
+A-003,35400001000100039,0000000003,20240515,20240610,20240611,10000,9,1,E01,card_number: length error,A-003: NG-card_number Length error
+A-004,35400001000100X4,0000000004,20240515,20240610,20240611,10000,9,1,E02,card_number: numeric error,A-004: NG-card_number Numeric error
+A-005,3540000100010005,00000000050,20240515,20240610,20240611,10000,9,1,E01,customer_contract_number: length error,A-005: NG-customer_contract_number Length error
+A-006,3540000100010006,00000000X6,20240515,20240610,20240611,10000,9,1,E02,customer_contract_number: numeric error,A-006: NG-customer_contract_number Numeric error
+,,,,,,0,,1,E99,Parameter non set error,A-007: NG-null error
+,3540000100010008,0000000008,20240515,20240610,20240611,10000,9,1,E99,Parameter non set error,A-008: NG-null error
+A-009,,0000000009,20240515,20240610,20240611,10000,9,1,E99,Parameter non set error,A-009: NG-null error
+A-010,3540000100010010,,20240515,20240610,20240611,10000,9,1,E99,Parameter non set error,A-010: NG-null error
+A-011,3540000100010011,0000000011,,20240610,20240611,10000,9,1,E99,Parameter non set error,A-011: NG-null error
+A-012,3540000100010012,0000000012,20240515,,20240611,10000,9,1,E99,Parameter non set error,A-012: NG-null error
+A-013,3540000100010013,0000000013,20240515,20240610,,10000,9,1,E99,Parameter non set error,A-013: NG-null error
+A-014,3540000100010014,0000000014,20240515,20240610,20240611,10000,,1,E99,Parameter non set error,A-014: NG-null error
+A-015,3540000100010015,0000000015,2024051A,20240610,20240611,10000,9,1,E02,customer_billing_due_date: numeric error,A-015: NG-customer_billing_due_date Numeric error
+A-016,3540000100010016,0000000016,20240515,2024061A,20240611,10000,9,1,E02,contract_settlement_date: numeric error,A-016: NG-contract_settlement_date Numeric error
+A-017,3540000100010017,0000000017,20240515,20240610,2024061A,10000,9,1,E02,deposit_date: numeric error,A-017: NG-deposit_date Numeric error
+A-018,3540000100010018,0000000018,20240515,20240610,20240611,10000,A,1,E02,excess_money_handling_category: numeric error,A-018: NG-excess_money_handling_category Numeric error
